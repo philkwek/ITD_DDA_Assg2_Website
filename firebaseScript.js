@@ -41,6 +41,8 @@ function signUpUser(email, username, password){
     .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
+
+        //Calls function to create a new user profile for realtimeDB
         writeUserData(user.uid, username, email);
         return;
     })
@@ -75,6 +77,7 @@ function logoutUser(){
     });
 }
 
+//function for writing user data into the realtimeDB
 function writeUserData(userId, name, email) {
     set(ref(db, 'players/' + userId), {
       username: name,
@@ -96,10 +99,7 @@ function displayUserData(user){
 
     get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
         if(snapshot.exists()){
-            console.log("Username: " + snapshot.val().username);
-            document.getElementById("usernameText").textContent = snapshot.val().username;
-            document.getElementById("emailText").textContent = snapshot.val().email;
-            document.getElementById("userIDText").textContent = user.uid;
+
         } 
         else 
         {
@@ -120,9 +120,7 @@ onAuthStateChanged(auth, (user) => {
       // ...
     } else {
       // User is signed out
-      document.getElementById("usernameText").textContent = "User is not signed in";
-      document.getElementById("emailText").textContent = "User is not signed in";
-      document.getElementById("userIDText").textContent = "User is not signed in";
+
       // ...
     }
 });
