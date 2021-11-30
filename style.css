@@ -1,0 +1,59 @@
+h1 {
+    font-weight: 900;
+}
+
+input {
+    width: 250px;
+    margin: auto;
+    box-sizing: border-box;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    background-color: transparent;
+}
+
+.inputField{
+    text-align: right;
+}
+
+.landingPage{
+    position: absolute;
+    bottom: 15%;
+}
+
+.formPage{
+    position: absolute;
+    bottom: 50%;
+}
+
+.formButton{
+    width: 90%;
+    border-radius: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#signupPageButton{
+    background-color: black;
+    border-color: transparent;
+    color: white;
+}
+
+#signupButton{
+    background-color: black;
+    border-color: transparent;
+    color: white;
+}
+
+#loginPageButton{
+    color: black;
+    border-color: transparent;
+}
+
+#loginButton{
+    color: black;
+    border-color: transparent;
+    position: relative;
+    top: 300px;
+}
+

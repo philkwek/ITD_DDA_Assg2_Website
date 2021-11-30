@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Save the Earth Companion App</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
 
      <!-- Latest compiled and minified CSS -->
@@ -13,35 +13,33 @@
 
   <body>
 
-    <div class = "landingPage container-fluid">
+    <form class="formPage container-fluid">
 
       <div class = "row m-1">
         <div class = "col pt-1">
-          <h1>Save the Earth</h1>
+          <h1>Login</h1>
         </div>
       </div>
 
-      <div class = "row m-1">
-        <div class = "col pt-1">
-          <p>
-            Check your in-game stats, global leaderboards and 
-            everything else in this mobile companion app to the Save the 
-            Earth VR experience.
-          </p>
+      <div class = "inputField row m-1 mt-3">
+          <div class = "col-12 pt-1">
+            <label for="email">Email:</label>
+            <input type="email" id = "emailLogin" name = "email"><br><br>
+          </div>
+
+          <div class = "col-12">
+            <label for="password">Password:</label>
+            <input type = "password" id = "passwordLogin" name = "password"><br><br>
         </div>
       </div>
 
       <div class = "row m-1 mt-3 text-center">
         <div class = "col-12 pt-1">
-          <input class = "formButton m-2" type = "button" id = "signupPageButton" value = "Sign Up">
-        </div>
-
-        <div class = "col-12 pt-1">
-          <input class = "formButton m-2" type = "button" id = "loginPageButton" value = "Login">
+          <input class = "formButton m-2" type = "button" id = "loginButton" value = "Login">
         </div>
       </div>
 
-    </div>
+    </form>
 
 
   </body>
