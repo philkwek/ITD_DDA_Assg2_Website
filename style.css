@@ -3,8 +3,6 @@ h1 {
 }
 
 input {
-    width: 250px;
-    margin: auto;
     box-sizing: border-box;
     border-top-color: transparent;
     border-left-color: transparent;
@@ -13,7 +11,7 @@ input {
 }
 
 .inputField{
-    text-align: right;
+    text-align: center;
 }
 
 .landingPage{
@@ -23,7 +21,7 @@ input {
 
 .formPage{
     position: absolute;
-    bottom: 50%;
+    bottom: 40%;
 }
 
 .formButton{
@@ -40,9 +38,11 @@ input {
 }
 
 #signupButton{
-    background-color: black;
+    color: black;
+    background-color: rgb(216, 216, 216);
     border-color: transparent;
-    color: white;
+    position: relative;
+    top: 300px;
 }
 
 #loginPageButton{
@@ -52,6 +52,7 @@ input {
 
 #loginButton{
     color: black;
+    background-color: rgb(216, 216, 216);
     border-color: transparent;
     position: relative;
     top: 300px;
