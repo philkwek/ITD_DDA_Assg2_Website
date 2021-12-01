@@ -1,38 +1,20 @@
+ //This script handles all operations related to firebase realtimeDB and authentication
+ 
  // Import the functions you need from the SDKs you need
- import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
  import { getAuth, initializeAuth, 
      createUserWithEmailAndPassword,
  signInWithEmailAndPassword,
 signOut,
 onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
- import { getDatabase, ref, child, set, update, remove, get } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
- // TODO: Add SDKs for Firebase products that you want to use
- // https://firebase.google.com/docs/web/setup#available-libraries
+ import { getDatabase, ref, child, set, update, remove, get, orderByChild } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyA25qh-gs-cOv-eC9_sa2ZQJOie--a5kXc",
-    authDomain: "itd-dda-assg2.firebaseapp.com",
-    databaseURL: "https://itd-dda-assg2-default-rtdb.firebaseio.com",
-    projectId: "itd-dda-assg2",
-    storageBucket: "itd-dda-assg2.appspot.com",
-    messagingSenderId: "171136772904",
-    appId: "1:171136772904:web:74f60054d60cedecac3e1d",
-    measurementId: "G-X8PN9WYBVE"
-  };
-
-
-
- // Initialize Firebase
- const app = initializeApp(firebaseConfig);
+//Reference the imports
  const auth = getAuth();
  const db = getDatabase();
 
  //References
- var signUpButton = document.getElementById("signUp");
- var loginButton = document.getElementById("login");
+ var signUpButton = document.getElementById("signupButton");
+ var loginButton = document.getElementById("loginButton");
  var logoutButton = document.getElementById("logout");
 
 // Functions
@@ -41,7 +23,6 @@ function signUpUser(email, username, password){
     .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-
         //Calls function to create a new user profile for realtimeDB
         writeUserData(user.uid, username, email);
         return;
@@ -49,11 +30,12 @@ function signUpUser(email, username, password){
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        alert(error.message);
         return;
     });
 }
 
-function loginUser(email, username, password){
+function loginUser(email, password){
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in 
@@ -64,6 +46,8 @@ function loginUser(email, username, password){
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      alert(error.message);
+      return;
     });
 }
 
@@ -91,7 +75,7 @@ function writeUserData(userId, name, email) {
     });
 }
 
-
+//function is for getting data from the realtimeDB
 function displayUserData(user){
     
     const dbref = ref(db);
@@ -109,7 +93,6 @@ function displayUserData(user){
 };
 
 
-
 // Event listeners
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -124,3 +107,27 @@ onAuthStateChanged(auth, (user) => {
       // ...
     }
 });
+
+if (signUpButton){
+  signUpButton.addEventListener("click", function(x){
+    x.preventDefault();
+    //var emailInput = document.getElementById("emailInput").value;
+    var emailInput = document.getElementById("emailInput").value;
+    var passwordInput = document.getElementById("passwordInput").value;
+    var usernameInput = document.getElementById("usernameInput").value;
+    console.log("Email: " + emailInput + " Password: " + passwordInput + " Username: " + usernameInput);
+    signUpUser(emailInput, usernameInput, passwordInput);
+    console.log("Signing up user...")
+  })
+}
+
+if (loginButton){
+  loginButton.addEventListener("click",function(x){
+    x.preventDefault();
+    var emailInput = document.getElementById("emailInput").value;
+    var passwordInput = document.getElementById("passwordInput").value;
+    loginUser(emailInput, passwordInput);
+    console.log("Logging in user...")
+  })
+}
+
