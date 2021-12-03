@@ -75,31 +75,12 @@ function writeUserData(userId, name, email) {
     });
 }
 
-//function is for getting data from the realtimeDB
-function displayUserData(user){
-    
-    const dbref = ref(db);
-    console.log("displaying user data...");
-
-    get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
-        if(snapshot.exists()){
-
-        } 
-        else 
-        {
-            console.log("No snapshot found!");
-        }
-    });
-};
-
-
 // Event listeners
 onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
-      displayUserData(user);
       // ...
     } else {
       // User is signed out
