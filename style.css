@@ -2,6 +2,7 @@ h1 {
     font-weight: 900;
 }
 
+
 input {
     box-sizing: border-box;
     border-top-color: transparent;
@@ -10,25 +11,20 @@ input {
     background-color: transparent;
 }
 
-.inputField{
-    text-align: center;
-}
-
-.landingPage{
-    position: absolute;
-    bottom: 15%;
-}
-
-.formPage{
-    position: absolute;
-    bottom: 40%;
+.center-element{
+    height: 80vh;
 }
 
 .formButton{
-    width: 90%;
+    width: 200px;
     border-radius: 32px;
     padding-top: 8px;
     padding-bottom: 8px;
+}
+
+#landing-title{
+    margin-top:3rem;
+    margin-left: 3rem;
 }
 
 #signupPageButton{
@@ -48,6 +44,7 @@ input {
 #loginPageButton{
     color: black;
     border-color: transparent;
+    background-color: rgb(216, 216, 216);
 }
 
 #loginButton{
