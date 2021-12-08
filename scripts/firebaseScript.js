@@ -2,10 +2,13 @@
  
  // Import the functions you need from the SDKs you need
  import { getAuth, initializeAuth, 
-     createUserWithEmailAndPassword,
- signInWithEmailAndPassword,
-signOut,
-onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      setPersistence,
+      browserSessionPersistence,
+      browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
  import { getDatabase, ref, child, set, update, remove, get, orderByChild } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
 //Reference the imports
@@ -16,26 +19,29 @@ onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-aut
  var signUpButton = document.getElementById("signupButton");
  var loginButton = document.getElementById("loginButton");
  var logoutButton = document.getElementById("logout");
+ var rememberMeState = document.getElementById("rememberMe"); //checkbox
 
 // Functions
-function signUpUser(email, username, password){
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        //Calls function to create a new user profile for realtimeDB
-        writeUserData(user.uid, username, email);
-        return;
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(error.message);
-        return;
-    });
-}
+function signUpUser(email, username, password, authType){
+  setPersistence(auth, authType)
+  createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    //Calls function to create a new user profile for realtimeDB
+    writeUserData(user.uid, username, email);
+    return;
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(error.message);
+    return;
+  });
+} 
 
-function loginUser(email, password){
+function loginUser(email, password, authType){
+    setPersistence(auth, authType) //sets persistence to remember user
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in 
@@ -89,15 +95,25 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+console.log(auth)
+
 if (signUpButton){
   signUpButton.addEventListener("click", function(x){
     x.preventDefault();
-    //var emailInput = document.getElementById("emailInput").value;
+
+    //Check remember me state
+    var authType = browserSessionPersistence;
+    if(rememberMeState.checked){
+      authType = browserLocalPersistence;
+    } else {
+      authType = browserSessionPersistence;
+    }
+
     var emailInput = document.getElementById("emailInput").value;
     var passwordInput = document.getElementById("passwordInput").value;
     var usernameInput = document.getElementById("usernameInput").value;
     console.log("Email: " + emailInput + " Password: " + passwordInput + " Username: " + usernameInput);
-    signUpUser(emailInput, usernameInput, passwordInput);
+    signUpUser(emailInput, usernameInput, passwordInput, authType);
     console.log("Signing up user...")
   })
 }
@@ -105,10 +121,20 @@ if (signUpButton){
 if (loginButton){
   loginButton.addEventListener("click",function(x){
     x.preventDefault();
+
+    //Check remember me state
+    var authType = browserSessionPersistence;
+    if(rememberMeState.checked){
+      authType = browserLocalPersistence;
+    } else {
+      authType = browserSessionPersistence;
+    }
+
     var emailInput = document.getElementById("emailInput").value;
     var passwordInput = document.getElementById("passwordInput").value;
-    loginUser(emailInput, passwordInput);
+    loginUser(emailInput, passwordInput, authType);
     console.log("Logging in user...")
   })
 }
+
 

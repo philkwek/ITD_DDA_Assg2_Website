@@ -16,6 +16,10 @@ input[type=text], input[type=email], input[type=password] {
     padding: 10px;
 }
 
+a:link {
+    text-decoration: none;
+}
+
 .center-element{
     height: 100vh;
 }
@@ -29,8 +33,8 @@ input[type=text], input[type=email], input[type=password] {
 
 #landing-title{
     position: absolute;
-    margin-top:7%;
-    margin-left: 7%;
+    margin-top:4%;
+    margin-left: 4%;
 }
 
 #signupPageButton{
@@ -57,5 +61,6 @@ input[type=text], input[type=email], input[type=password] {
     background-color: rgb(216, 216, 216);
     border-color: transparent;
     height: 46spx;
+    margin-top: 3rem;
 }
 
