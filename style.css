@@ -16,11 +16,8 @@ input[type=text], input[type=email], input[type=password] {
     padding: 10px;
 }
 
-.center-element-signup{
-    height: 80vh;
-}
-.center-element-login{
-    height: 75vh;
+.center-element{
+    height: 100vh;
 }
 
 .formButton{
@@ -31,8 +28,9 @@ input[type=text], input[type=email], input[type=password] {
 }
 
 #landing-title{
-    margin-top:3rem;
-    margin-left: 3rem;
+    position: absolute;
+    margin-top:7%;
+    margin-left: 7%;
 }
 
 #signupPageButton{
