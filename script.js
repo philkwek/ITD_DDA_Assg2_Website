@@ -2,6 +2,7 @@
 //References for landing page buttons
 var signupPageButton = document.getElementById("signupPageButton");
 var loginPageButton = document.getElementById("loginPageButton");
+var landingTitle = document.getElementById("landingTitle")
 
 //Listeners for button presses
 if (signupPageButton){
@@ -17,3 +18,9 @@ if (loginPageButton){
         window.location.href = "html/login.html";
     })
 }
+
+landingTitle.addEventListener("click", function(x){
+    x.preventDefault();
+    window.location.href = "../index.html";
+})
+
