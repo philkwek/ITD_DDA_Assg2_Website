@@ -2,17 +2,25 @@ h1 {
     font-weight: 900;
 }
 
-
 input {
     box-sizing: border-box;
-    border-top-color: transparent;
-    border-left-color: transparent;
-    border-right-color: transparent;
-    background-color: transparent;
+    border-color: transparent;
+    background-color: rgb(236, 236, 236);
+    border-radius: 10px;
+    width: 340px;
+    height: 50px;
 }
 
-.center-element{
+input[type=text], input[type=email], input[type=password] {
+    margin-top:0.5rem;
+    padding: 10px;
+}
+
+.center-element-signup{
     height: 80vh;
+}
+.center-element-login{
+    height: 75vh;
 }
 
 .formButton{
@@ -37,8 +45,7 @@ input {
     color: black;
     background-color: rgb(216, 216, 216);
     border-color: transparent;
-    position: relative;
-    top: 300px;
+    height: 46spx;
 }
 
 #loginPageButton{
@@ -51,7 +58,6 @@ input {
     color: black;
     background-color: rgb(216, 216, 216);
     border-color: transparent;
-    position: relative;
-    top: 300px;
+    height: 46spx;
 }
 

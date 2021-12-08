@@ -18,38 +18,46 @@
 
   <body>
 
-    <form class="formPage container-fluid">
+    <div class="container-fluid">
 
-      <div class = "row m-1 justify-content-center">
-        <div class = "col-11 pt-1">
-          <h1>Sign up</h1>
+      <div class="row">
+        <div class="col-12">
+          <h1 id="landing-title">Save the Earth</h1>
         </div>
       </div>
 
-      <div class = "row m-1 mt-3 justify-content-center">
-          <label class = "col-11 pt-1" for="email">Email:</label>
-          <input class = "col-10 pt-1" type="email" id = "emailInput" name = "email"><br><br>
-      </div>
+      <div class="center-element-signup row justify-content-center align-items-center">
+        <div class = "col-12 d-flex flex-column align-items-center">
 
-      <div class = "row m-1 mt-3 justify-content-center">
-        <label class = "col-11 pt-1" for="username">Username:</label>
-        <input class = "col-10 pt-1" type="text" id = "usernameInput" name = "username"><br><br>
-    </div>
+          <div class="text-center">
+            <h2 style="margin-bottom: 2rem;">Create New Account</h2>
+          </div>
 
-      <div class = "row m-1 mt-3 justify-content-center">
-        <label class = "col-11 pt-1" for="password">Password:</label>
-        <input class = "col-10 pt-1" type = "password" id = "passwordInput" name = "password"><br><br>
-    </div>
+          <form>
+            <div>
+              <label for="email">Email:</label><br>
+              <input type="email" id = "emailInput" name = "email"><br><br>
+            </div>
+  
+            <div>
+              <label for="username">Username:</label><br>
+              <input type="text" id = "usernameInput" name = "username"><br><br>
+            </div>
+  
+            <div>
+              <label for="password">Password:</label><br>
+              <input type = "password" id = "passwordInput" name = "password"><br><br>
+            </div>
 
-      <div class = "row m-1 mt-3 text-center">
-        <div class = "col-12 pt-1">
-          <input class = "formButton m-2" type = "button" id = "signupButton" value = "Sign up">
+            <div class="text-center">
+              <input class = "formButton m-2" type = "button" id = "signupButton" value = "Sign Up">
+            </div>
+
+          </form>
+
         </div>
       </div>
-
-    </form>
-
-
+    </div>
   </body>
 
   <!-- References for scripts -->
