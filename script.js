@@ -7,13 +7,13 @@ var loginPageButton = document.getElementById("loginPageButton");
 if (signupPageButton){
     signupPageButton.addEventListener("click", function(x){
         x.preventDefault();
-        window.location.href = "/html/signup.html";
+        window.location.href = "html/signup.html";
     })
 }
 
 if (loginPageButton){
     loginPageButton.addEventListener("click", function(x){
         x.preventDefault();
-        window.location.href = "/html/login.html";
+        window.location.href = "html/login.html";
     })
 }
