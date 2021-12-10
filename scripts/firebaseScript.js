@@ -84,6 +84,7 @@ function writeUserData(userId, username, email) {
     });
 
     set(ref(db, 'playerSessionTime/' + userId), {
+      "firstInstance": "firstInstance"
     })
     .then(()=>{
         console.log("User data written successfully");
