@@ -68,11 +68,39 @@ function logoutUser(){
 }
 
 //function for writing user data into the realtimeDB
-function writeUserData(userId, name, email) {
-    set(ref(db, 'players/' + userId), {
-      username: name,
-      email: email,
+function writeUserData(userId, username, email) {
+    let newPlayer = new Player(email, username, userId);
+    let newPlayerProfileData = new PlayerProfileData(0,0,0);
+    let newMinigameStat = new MinigameStats(0,0,0,0,0,0);
+    let newPlayerGameData = new PlayerGameData(0,0,newMinigameStat)
+    
+    //sets profile data
+    set(ref(db, 'players/' + userId), newPlayer)
+    .then(()=>{
+        console.log("User data written successfully");
     })
+    .catch((error)=>{
+        console.log("Error uploading data!");
+    });
+
+    set(ref(db, 'playerSessionTime/' + userId), {
+    })
+    .then(()=>{
+        console.log("User data written successfully");
+    })
+    .catch((error)=>{
+        console.log("Error uploading data!");
+    });
+
+    set(ref(db, 'playerProfileData/' + userId), newPlayerProfileData)
+    .then(()=>{
+        console.log("User data written successfully");
+    })
+    .catch((error)=>{
+        console.log("Error uploading data!");
+    });
+
+    set(ref(db, 'playerGameData/' + userId), newPlayerGameData)
     .then(()=>{
         console.log("User data written successfully");
     })
