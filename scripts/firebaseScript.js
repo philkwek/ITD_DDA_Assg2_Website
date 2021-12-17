@@ -47,6 +47,17 @@ function loginUser(email, password, authType){
       // Signed in 
       console.log("User logged in succesfully")
       const user = userCredential.user;
+
+      //opens appropriate page after login
+      if(checkAdmin(user)){
+        //open admin page
+        console.log(user);
+        window.location.href = "../../html/adminPages/adminHomepage.html";
+      } else {
+        //open user home page
+        console.log(user);
+        window.location.href = "../../html/userPages/userHomepage.html";
+      }
       // ...
     })
     .catch((error) => {
@@ -55,6 +66,9 @@ function loginUser(email, password, authType){
       alert(error.message);
       return;
     });
+
+
+    
 }
 
 function logoutUser(){
@@ -110,18 +124,30 @@ function writeUserData(userId, username, email) {
     });
 }
 
+//checks if input user is a admin 
+function checkAdmin(user) {
+  const dbref = ref(db);
+  get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
+    if(snapshot.exists()){
+      if(snapshot.val().admin == "true"){
+        return true;
+      } else {
+        return false;
+      }
+    }
+  })
+}
+
 // Event listeners
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      // ...
-    } else {
-      // User is signed out
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
 
-      // ...
-    }
+  } else {
+    // User is signed out
+
+  }
 });
 
 console.log(auth)

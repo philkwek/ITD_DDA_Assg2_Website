@@ -19,8 +19,11 @@ if (loginPageButton){
     })
 }
 
-landingTitle.addEventListener("click", function(x){
-    x.preventDefault();
-    window.location.href = "../index.html";
-})
+if(landingTitle){
+    landingTitle.addEventListener("click", function(x){
+        x.preventDefault();
+        window.location.href = "../index.html";
+    })
+}
+
 
