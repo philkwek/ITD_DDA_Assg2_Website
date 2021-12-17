@@ -11,7 +11,7 @@
       browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
  import { getDatabase, ref, child, set, update, remove, get, orderByChild } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
-//Reference the imports
+//Reference the izmports
  const auth = getAuth();
  const db = getDatabase();
 

@@ -4,6 +4,7 @@ function Player(email, username, userID){
     this.email = email;
     this.username = username;
     this.userID = userID;
+    this.admin = false;
 }
 
 function PlayerSessionTime(titleTimeSession, timeSpend, dateOfSession, timeOfSession) {
