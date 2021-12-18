@@ -47,18 +47,20 @@ function loginUser(email, password, authType){
       // Signed in 
       console.log("User logged in succesfully")
       const user = userCredential.user;
+      const dbref = ref(db);
 
-      //opens appropriate page after login
-      if(checkAdmin(user)){
-        //open admin page
-        console.log(user);
-        window.location.href = "../../html/adminPages/adminHomepage.html";
-      } else {
-        //open user home page
-        console.log(user);
-        window.location.href = "../../html/userPages/userHomepage.html";
-      }
-      // ...
+      //checks if logged in user is admin or user
+      get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
+        if(snapshot.exists()){
+          if(snapshot.val().admin == "true"){
+            console.log("user logged in in admin");
+            window.location.href = "../../html/adminPages/adminHomepage.html";
+          } else {
+            console.log("user logged in is not admin");
+            window.location.href = "../../html/userPages/userHomepage.html";
+          }
+        }
+      });
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -122,20 +124,6 @@ function writeUserData(userId, username, email) {
     .catch((error)=>{
         console.log("Error uploading data!");
     });
-}
-
-//checks if input user is a admin 
-function checkAdmin(user) {
-  const dbref = ref(db);
-  get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
-    if(snapshot.exists()){
-      if(snapshot.val().admin == "true"){
-        return true;
-      } else {
-        return false;
-      }
-    }
-  })
 }
 
 // Event listeners
