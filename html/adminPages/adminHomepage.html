@@ -7,13 +7,19 @@
     <link href="../../style.css" rel="stylesheet" type="text/css"/>
     <link href="../../css/homePage.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
-
-     <!-- Latest compiled and minified CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- CDN reference for jQuery slim-->
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" 
-    integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <!-- CDN reference for jQuery min-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified js for Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" 
+    integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
+    <!-- CDN reference for Chart.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
 
   </head>
 
@@ -42,6 +48,62 @@
           </a>
         </li>
       </ul>
+    </div>
+
+    <div id="mainBody" class="container-fluid">
+      <div class="row m-1 mt-4">
+        <div class="col">
+          <p id="onlineUsers">Online Users: <span id="noOfOnlineUsers">2</span></p>
+        </div>
+        <div class="col" id="userProfile">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Username
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" id="logoutButton" href="#">Log out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-1 mt-1">
+        <div class="col">
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Daily Active Users</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar">
+                    <canvas id="myBarChart"></canvas>
+                </div>
+                <hr>
+                Tracks total number of users that comes online in a day. Tracks data weekly.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-1 mt-4">
+        <div class="col">
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Average play session per day</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-bar">
+                    <canvas id="myBarChart"></canvas>
+                </div>
+                <hr>
+                Tracks average playtime per day among all users who played for that day.
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
 
   </body>

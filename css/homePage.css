@@ -1,6 +1,6 @@
 .sidebar-container {
     position: fixed;
-    width: 220px;
+    width: 20%;
     height: 100%;
     left: 0;
     overflow-x: hidden;
@@ -78,4 +78,25 @@
   
   .sidebar-navigation .header::before {
     background-color: transparent;
+  }
+
+  #mainBody{
+    position: absolute;
+    width: 80%;
+    left: 20%;
+  }
+
+  #onlineUsers{
+      vertical-align: middle;
+      background-color: grey;
+      width: 45%;
+      padding: 20px;
+      border-radius: 10px;
+      color: white;
+      font-size: 1.5rem;
+  }
+
+  #noOfOnlineUsers{
+      text-align: right;
+      justify-content: end;
   }
