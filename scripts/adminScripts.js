@@ -9,11 +9,19 @@
     browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
 import { getDatabase, ref, child, set, update, remove, 
     get, orderByChild, orderByValue, query, limitToFirst,
-    onValue } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
+    onValue, equalTo, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
-//Reference the izmports
+//Reference the imports
 const auth = getAuth();
 const db = getDatabase();
+
+//Reference page buttons
+var searchUserButton = document.getElementById("searchPlayerButton");
+
+//checks what is the currently loaded HTML page
+var path = window.location.pathname;
+var page = path.split("/").pop();
+console.log(page);
 
 //Function for inputing daily active users data
 function inputActiveUsersData(data){
@@ -65,6 +73,7 @@ function inputAveragePlaySessionData(data){
     });
 }
 
+//function gets number od active users for each day
 function getDailyActiveUsers(){
 
     let weeklyData = [0,0,0,0,0,0,0];
@@ -180,12 +189,63 @@ function getCurrentOnlineUsers(){
     });
 }
 
+function searchPlayer(input, emailTrue){
+    if (emailTrue){
+        //search for email
+        const searchQuery = query(ref(db, 'players'), orderByChild("email"), equalTo(input))
+        get(searchQuery).then((snapshot)=>{
+            if(snapshot.exists()){
+                console.log(snapshot.val());
+            } else {
+                alert("User not found!");
+                console.log("failed");
+            }
+        })
+    } else {
+        //search for player username
+        const searchQuery = query(ref(db, 'players'), orderByChild("username"), equalTo(input))
+        get(searchQuery).then((snapshot)=>{
+            if(snapshot.exists()){
+                console.log(snapshot.val());
+            } else {
+                alert("User not found!");
+                console.log("failed");
+            }
+        })
+    }
+}
+
+function validateEmail(email) 
+    {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
 const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
 onValue(latestWeek, (snapshot) => {
-    getCurrentOnlineUsers();
+    if(page == "adminHomepage.html"){
+        getCurrentOnlineUsers();
+    }
 })
 
-
-getDailyActiveUsers();
 getCurrentOnlineUsers();
-getPlayerSessionAvg();
+
+if(page == "adminHomepage.html"){
+    getDailyActiveUsers();
+ 
+    getPlayerSessionAvg();
+}
+
+if(searchUserButton){
+    searchUserButton.addEventListener('click', function(x){
+        x.preventDefault();
+        const input = document.getElementById("playerSearch").value;
+        if (validateEmail(input)){
+            console.log("Email True");
+            searchPlayer(input, true);
+        } else{
+            console.log("Email false");
+            searchPlayer(input, false);
+        };
+    })
+}
