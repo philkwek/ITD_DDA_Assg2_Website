@@ -100,17 +100,41 @@ function getDailyActiveUsers(){
 
 //this function gets current number of online players
 function getCurrentOnlineUsers(){
+    //query to get the latest week for data
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
 
-    const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-    const d = new Date();
-    const day = weekday[d.getDay()];
-
-    get(child(dbref, "weeklyActive/" + weekNumber + "/" + day + "/currentlyActive")).then((snapshot)=>{
+    get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
-            console.log(snapshot.numChildren() + " Total currently online players");
-            //Insert data into html
+            const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            var data = snapshot.val();
+            var data = Object.values(data)[0];
+            console.log(data);
+
+            //get value of current day
+            const d = new Date();
+            var currentDay = d.getDay();
+            
+            var iteration = -1;
+            for (const property in data) {
+                iteration += 1;
+                //checks if iterated day is the current day
+                if (property == dates[currentDay]){
+                    console.log("day found")
+                    if (data[property].currentActive != null){
+                        const onlineCount = data[property].currentActive;
+                        //input into html
+                        $("#noOfOnlineUsers").text(onlineCount);
+                    } else {
+                        const onlineCount = 0;
+                        //input into html
+                        $("#noOfOnlineUsers").text(onlineCount);
+                    }
+                }
+            }
         }
     });
 }
 
 getDailyActiveUsers();
+getCurrentOnlineUsers();
