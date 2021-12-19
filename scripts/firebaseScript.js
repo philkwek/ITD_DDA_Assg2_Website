@@ -8,7 +8,8 @@
       onAuthStateChanged,
       setPersistence,
       browserSessionPersistence,
-      browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
+      browserLocalPersistence,
+      sendPasswordResetEmail, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
  import { getDatabase, ref, child, set, update, remove, get, orderByChild } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
 //Reference the izmports
@@ -20,6 +21,7 @@
  var loginButton = document.getElementById("loginButton");
  var logoutButton = document.getElementById("logout");
  var rememberMeState = document.getElementById("rememberMe"); //checkbox
+ var resetPasswordButton = document.getElementById("resetPasswordButton");
 
 // Functions
 function signUpUser(email, username, password, authType){
@@ -68,9 +70,6 @@ function loginUser(email, password, authType){
       alert(error.message);
       return;
     });
-
-
-    
 }
 
 function logoutUser(){
@@ -81,6 +80,23 @@ function logoutUser(){
     }).catch((error) => {
       // An error happened.
     });
+}
+
+function forgotPassword(email){
+  console.log("Sending email...")
+  const auth = getAuth();
+  sendPasswordResetEmail(auth, email)
+  .then(() => {
+    // Password reset email sent!
+    console.log("Email sent!");
+    // ..
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage);
+    // ..
+  });
 }
 
 //function for writing user data into the realtimeDB
@@ -138,7 +154,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-console.log(auth)
+
 
 if (signUpButton){
   signUpButton.addEventListener("click", function(x){
@@ -152,9 +168,9 @@ if (signUpButton){
       authType = browserSessionPersistence;
     }
 
-    var emailInput = document.getElementById("emailInput").value;
-    var passwordInput = document.getElementById("passwordInput").value;
-    var usernameInput = document.getElementById("usernameInput").value;
+    const emailInput = document.getElementById("emailInput").value;
+    const passwordInput = document.getElementById("passwordInput").value;
+    const usernameInput = document.getElementById("usernameInput").value;
     console.log("Email: " + emailInput + " Password: " + passwordInput + " Username: " + usernameInput);
     signUpUser(emailInput, usernameInput, passwordInput, authType);
     console.log("Signing up user...")
@@ -173,11 +189,26 @@ if (loginButton){
       authType = browserSessionPersistence;
     }
 
-    var emailInput = document.getElementById("emailInput").value;
-    var passwordInput = document.getElementById("passwordInput").value;
+    const emailInput = document.getElementById("emailInput").value;
+    const passwordInput = document.getElementById("passwordInput").value;
     loginUser(emailInput, passwordInput, authType);
     console.log("Logging in user...")
   })
-}
+};
+  
+if (resetPasswordButton){
+    resetPasswordButton.addEventListener("click", function(x){
+      console.log("Reset button clicked")
+      x.preventDefault();
+      const emailInput = document.getElementById("emailInput").value;
+
+      if (emailInput == ""){
+        alert("Please input an Email")
+      } else {
+        forgotPassword(emailInput);
+      }
+     
+    })
+};
 
 

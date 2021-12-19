@@ -56,6 +56,13 @@ a:link {
     background-color: rgb(216, 216, 216);
 }
 
+#resetPasswordButton{
+    color: black;
+    border-color: transparent;
+    background-color: rgb(216, 216, 216);
+    width: 280px;
+}
+
 #loginButton{
     color: black;
     background-color: rgb(216, 216, 216);
