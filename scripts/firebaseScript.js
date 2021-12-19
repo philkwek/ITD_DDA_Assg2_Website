@@ -22,6 +22,7 @@
  var logoutButton = document.getElementById("logoutButton");
  var rememberMeState = document.getElementById("rememberMe"); //checkbox
  var resetPasswordButton = document.getElementById("resetPasswordButton");
+ var usernamePlace = document.getElementById("dropdownMenuButton");
 
 // Functions
 function signUpUser(email, username, password, authType){
@@ -29,7 +30,7 @@ function signUpUser(email, username, password, authType){
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
-    const user = userCredential.user;
+    var user = userCredential.user;
     //Calls function to create a new user profile for realtimeDB
     writeUserData(user.uid, username, email);
     return;
@@ -147,7 +148,19 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
-
+    const uid = user.uid;
+    console.log(uid);
+    if (usernamePlace != null){
+      const dbref = ref(db);
+      get(child(dbref, "players/" + uid)).then((snapshot)=>{
+        if(snapshot.exists()){
+          const username = snapshot.val().username;
+          $("#dropdownMenuButton").text(username);
+        } else {
+          console.log("Not found");
+        }
+      });
+    }
   } else {
     // User is signed out
 
@@ -219,5 +232,7 @@ if (resetPasswordButton){
      
     })
 };
+
+
 
 
