@@ -7,7 +7,8 @@
     setPersistence,
     browserSessionPersistence,
     browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
-import { getDatabase, ref, child, set, update, remove, get, orderByChild } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
+import { getDatabase, ref, child, set, update, remove, 
+    get, orderByChild, orderByValue, query, limitToFirst } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
 //Reference the izmports
 const auth = getAuth();
@@ -22,7 +23,7 @@ function inputActiveUsersData(data){
             labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             datasets: [{
                 label: 'Total Active Users',
-                data: [12, 19, 3, 5, 2, 3, 5],
+                data: data,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -55,34 +56,41 @@ function inputActiveUsersData(data){
 }
 
 function getDailyActiveUsers(){
-    //figure out a way to accurately get week number of the year
 
-    console.log(weekNumber);
+    var weeklyData = [0,0,0,0,0,0,0];
 
-    var weeklyData = {
-        sunday: 0,
-        monday: 0,
-        tuesday: 0,
-        wednesday: 0,
-        thursday: 0,
-        friday: 0,
-        saturday: 0
-    }
+    //query to get the latest week for data
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
 
-    const dbref = ref(db);
-
-    //appends to weeklyData object for today's data
-    get(child(dbref, "weeklyActive/" + weekNumber)).then((snapshot)=>{
+    //gets data for current week
+    get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
-            var sundayValue = snapshot.Sunday.wasActive.numChildren();
-            var mondayValue = snapshot.Monday.wasActive.numChildren();
-            var tuesdayValue = snapshot.Monday.wasActive.numChildren();
-            var wednesdayValue = snapshot.Monday.wasActive.numChildren();
-            var thursdayValue = snapshot.Monday.wasActive.numChildren();
-            var fridayValue = snapshot.Monday.wasActive.numChildren();
-            var saturdayValue = snapshot.Monday.wasActive.numChildren();
+            var data = snapshot.val();
+            var data = Object.values(data)[0];
+            console.log(data);
+            const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            console.log(data)
 
-            console.log(wednesdayValue);
+            // iterates through object to check for that day's online player count
+            var iteration = -1;
+            for (const property in data) {
+                iteration += 1;
+                console.log(iteration);
+                console.log(property);
+                //checks if wasActive property exists, if it does, get the number and place it in respective
+                // value in array
+                if (data[property].wasActive != null){
+                    const playerCount = data[property].wasActive.length;
+                    for (let i=0; i<dates.length; i++){
+                        if (property == dates[i]){
+                            weeklyData[i] = playerCount;
+                        }
+                    }
+                }
+            }
+            console.log(weeklyData);
+            inputActiveUsersData(weeklyData);
+
         } else {
             console.log("error");
         }
