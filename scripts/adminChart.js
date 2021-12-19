@@ -18,38 +18,47 @@ const db = getDatabase();
 //Function for inputing daily active users data
 function inputActiveUsersData(data){
     const activeUsersChart = document.getElementById('activeUsersChart').getContext('2d');
-    const myChart = new Chart(activeUsersChart, {
-        type: 'bar',
+    const activeChart = new Chart(activeUsersChart, {
+        type: 'line',
         data: {
             labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             datasets: [{
                 label: 'Total Active Users',
                 data: data,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(235, 52, 213, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(235, 52, 213, 1)'
-                ],
-                borderWidth: 1
+                borderColor: "rgb(62, 139, 62)",
+                borderWidth: 3,
+                fill: true
             }]
         },
         options: {
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                }
+            }
+        }
+    });
+}
+
+//Function for inputing avg player session time data
+function inputAveragePlaySessionData(data){
+    const playerSessionChart = document.getElementById('playerSessionChart').getContext('2d');
+    const playerChart = new Chart(playerSessionChart, {
+        type: 'line',
+        data: {
+            labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            datasets: [{
+                label: 'Average Play time in Minutes',
+                data: data,
+                borderColor: "rgb(62, 139, 62)",
+                borderWidth: 3,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
                 }
             }
         }
@@ -58,7 +67,8 @@ function inputActiveUsersData(data){
 
 function getDailyActiveUsers(){
 
-    var weeklyData = [0,0,0,0,0,0,0];
+    let weeklyData = [0,0,0,0,0,0,0];
+    const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     //query to get the latest week for data
     const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
@@ -68,16 +78,11 @@ function getDailyActiveUsers(){
         if(snapshot.exists()){
             var data = snapshot.val();
             var data = Object.values(data)[0];
-            console.log(data);
-            const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            console.log(data)
 
             // iterates through object to check for that day's online player count
             var iteration = -1;
             for (const property in data) {
                 iteration += 1;
-                console.log(iteration);
-                console.log(property);
                 //checks if wasActive property exists, if it does, get the number and place it in respective
                 // value in array
                 if (data[property].wasActive != null){
@@ -89,8 +94,49 @@ function getDailyActiveUsers(){
                     }
                 }
             }
-            console.log(weeklyData);
             inputActiveUsersData(weeklyData);
+
+        } else {
+            console.log("error");
+        }
+    });
+}
+
+//function gets play session times and calculates an overall average
+function getPlayerSessionAvg(){
+    
+    let weeklyAvg = [0,0,0,0,0,0,0];
+    const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    //query to get the latest week for data
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1));
+
+    //gets data for current week
+    get(latestWeek).then((snapshot)=>{
+        if(snapshot.exists()){
+            var data = snapshot.val();
+            var data = Object.values(data)[0];
+            console.log(data);
+
+            //function iterates through obj to get total session time for that day before calculating avg
+            let iteration = -1;
+            for (const property in data){
+                //calcualtes avg
+                iteration += 1;
+                if (data[property].wasActive == null){
+                    var averageTime = 0;
+                } else {
+                    var averageTime = data[property].totalPlaySession/data[property].wasActive.length;
+                }
+                //finds correct day to input into array
+                for (let x=0; x<dates.length; x++){
+                    if (property == dates[x]){
+                        weeklyAvg[x] = averageTime;
+                    }
+                }
+            }
+            console.log(weeklyAvg);
+            inputAveragePlaySessionData(weeklyAvg);
 
         } else {
             console.log("error");
@@ -107,11 +153,8 @@ function getCurrentOnlineUsers(){
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
             const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
             var data = snapshot.val();
             var data = Object.values(data)[0];
-            console.log(data);
-
             //get value of current day
             const d = new Date();
             var currentDay = d.getDay();
@@ -145,3 +188,4 @@ onValue(latestWeek, (snapshot) => {
 
 getDailyActiveUsers();
 getCurrentOnlineUsers();
+getPlayerSessionAvg();
