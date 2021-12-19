@@ -19,7 +19,7 @@
  //References
  var signUpButton = document.getElementById("signupButton");
  var loginButton = document.getElementById("loginButton");
- var logoutButton = document.getElementById("logout");
+ var logoutButton = document.getElementById("logoutButton");
  var rememberMeState = document.getElementById("rememberMe"); //checkbox
  var resetPasswordButton = document.getElementById("resetPasswordButton");
 
@@ -195,6 +195,15 @@ if (loginButton){
     console.log("Logging in user...")
   })
 };
+
+if(logoutButton){
+  logoutButton.addEventListener("click",function(x){
+    x.preventDefault();
+    console.log("Logging out user...")
+    logoutUser();
+    window.location.href = "../../index.html";
+  })
+}
   
 if (resetPasswordButton){
     resetPasswordButton.addEventListener("click", function(x){
