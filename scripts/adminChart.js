@@ -8,7 +8,8 @@
     browserSessionPersistence,
     browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
 import { getDatabase, ref, child, set, update, remove, 
-    get, orderByChild, orderByValue, query, limitToFirst } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
+    get, orderByChild, orderByValue, query, limitToFirst,
+    onValue } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
 //Reference the izmports
 const auth = getAuth();
@@ -121,8 +122,8 @@ function getCurrentOnlineUsers(){
                 //checks if iterated day is the current day
                 if (property == dates[currentDay]){
                     console.log("day found")
-                    if (data[property].currentActive != null){
-                        const onlineCount = data[property].currentActive;
+                    if (data[property].currentlyActive != null){
+                        const onlineCount = data[property].currentlyActive.length;
                         //input into html
                         $("#noOfOnlineUsers").text(onlineCount);
                     } else {
@@ -135,6 +136,12 @@ function getCurrentOnlineUsers(){
         }
     });
 }
+
+const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+onValue(latestWeek, (snapshot) => {
+    getCurrentOnlineUsers();
+})
+
 
 getDailyActiveUsers();
 getCurrentOnlineUsers();
