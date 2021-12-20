@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Save the Earth | User Profile</title>
+    <title>Save the Earth | User Search</title>
     <link href="../../style.css" rel="stylesheet" type="text/css"/>
     <link href="../../css/homePage.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
@@ -26,27 +26,26 @@
   <body>
 
     <div class="sidebar-container">
-      <div class="sidebar-logo">
-        Save the Earth!
-        <br>User Dashboard
+        <div class="sidebar-logo">
+          Save the Earth!
+          <br>User Dashboard
+        </div>
+        <ul class="sidebar-navigation">
+          <li class="header">Navigation</li>
+          <li>
+            <a href="userHomepage.html">
+              <i class="fa fa-home" aria-hidden="true"></i> Profile
+            </a>
+          </li>
+          <li>
+            <a href="userSearch.html">
+              <i class="fa fa-tachometer" aria-hidden="true"></i> Search other Players
+            </a>
+          </li>
+        </ul>
       </div>
-      <ul class="sidebar-navigation">
-        <li class="header">Navigation</li>
-        <li>
-          <a href="userHomepage.html">
-            <i class="fa fa-home" aria-hidden="true"></i> Profile
-          </a>
-        </li>
-        <li>
-          <a href="userSearch.html">
-            <i class="fa fa-tachometer" aria-hidden="true"></i> Search other Players
-          </a>
-        </li>
-      </ul>
-    </div>
 
-    <div id="mainBody" class="container">
-
+    <div id="mainBody" class="container-fluid">
       <div class="row m-1 mt-4">
         <div class="col">
           <p id="onlineUsers">Online Users: <span id="noOfOnlineUsers">Null</span></p>
@@ -65,22 +64,39 @@
         </div>
       </div>
 
-      <div id="playerData">
+      <div class="row m-1 mt-4" id="searchInputs">
+        <div class="col">
+          <div class="mb-3">
+            <div class="d-flex flex-column">
+              <div class="=align-self-center">
+                <label for="playerSearch" class="form-label">Search for a Player</label>
+                <input type="text" class="form-control" id="playerSearch" aria-describedby="playerSearch">
+                <div id="searchHelp" class="form-text">Search using either their Email or their Username!</div> 
+              </div>
+              <div class="align-self-center mt-4 d-grid gap-2 col-3 mx-auto">
+                <button class="btn btn-primary btn-lg" type="button" id="searchPlayerButton">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="playerData" style="display: none;">
         <div class="row m-1 mb-0 mt-4">
           <div class="col mb-0">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">User Email</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">User Profile Name</h6>
               </div>
-              <div id="searchEmail" class="card-body text">
-                  -email-
+              <div id="searchUsername" class="card-body text">
+                  quakeroats
               </div>
             </div>
           </div>
           <div class="col mb-0">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Online Status</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">User Current Status</h6>
               </div>
               <div id="searchCurrentStatus" class="card-body text" style="color:grey;">
                   Offline
@@ -304,7 +320,7 @@
         </div>
         </div>
       </div>
-
+      
     </div>
 
   </body>
@@ -314,6 +330,6 @@
   <script src="../../script.js"></script>
   <script type="module" src = "../../scripts/config.js"></script>
   <script type="module" src = "../../scripts/firebaseScript.js"></script>
-  <script type="module" src = "../../scripts/userScripts.js"></script>
+  <script type="module" src="../../scripts/adminScripts.js"></script>
   
 </html>
