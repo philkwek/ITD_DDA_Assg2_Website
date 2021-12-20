@@ -14,10 +14,12 @@ function PlayerSessionTime(titleTimeSession, timeSpend, dateOfSession, timeOfSes
     this.timeOfSession = timeOfSession;
 }
 
-function PlayerProfileData(totalTimePlayed, noOfTaskCompleted, noOfMinigamesCompleted) {
+function PlayerProfileData(totalTimePlayed, noOfTaskCompleted, noOfMinigamesCompleted, completion) {
     this.totalTimePlayed = totalTimePlayed;
     this.noOfTaskCompleted = noOfTaskCompleted;
     this.noOfMinigamesCompleted = noOfMinigamesCompleted;
+    this.completion = completion;
+
 }
 
 function PlayerGameData(totalObjPicked, noOfCraftsMade, minigameStats) {
@@ -26,7 +28,8 @@ function PlayerGameData(totalObjPicked, noOfCraftsMade, minigameStats) {
     this.minigameStats = minigameStats;
 }
 
-function MinigameStats(totalThrows, totalHits, totalMiss, accuracyPercentage, longestRoundMinutes, longestThrowStreak) {
+function MinigameStats(highscore, totalThrows, totalHits, totalMiss, accuracyPercentage, longestRoundMinutes, longestThrowStreak) {
+    this.highscore = highscore;
     this.totalThrows = totalThrows;
     this.totalHits  = totalHits;
     this.totalMiss = totalMiss;

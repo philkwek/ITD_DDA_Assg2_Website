@@ -89,11 +89,12 @@
 
   #onlineUsers{
       vertical-align: middle;
-      background-color: grey;
+      background-color: white;
+      box-shadow: 2px 5px 15px 5px #dfdfdf;
       width: 50%;
       padding: 20px;
       border-radius: 10px;
-      color: rgb(55, 248, 55);
+      color: rgb(62, 139, 62);
       font-size: 1.5rem;
       font-weight: 700;
   }
@@ -112,10 +113,19 @@
     font-size: 1.5rem;
     text-align: left;
     border-radius: 10px;
-    background-color: grey;
+    background-color: white;
     font-weight: 700;
+    border-color: transparent;
+    color: black;
+    box-shadow: 2px 5px 15px 5px #dfdfdf;
+
   }
 
   #searchInputs{
     font-size:1.5rem;
+  }
+
+  .card-body.text {
+    font-size: 1.5rem;
+    font-weight: 700;
   }

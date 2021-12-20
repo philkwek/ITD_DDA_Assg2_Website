@@ -15,8 +15,9 @@ import { getDatabase, ref, child, set, update, remove,
 const auth = getAuth();
 const db = getDatabase();
 
-//Reference page buttons
+//Reference 
 var searchUserButton = document.getElementById("searchPlayerButton");
+var playerDataCharts = document.getElementById("playerData");
 
 //checks what is the currently loaded HTML page
 var path = window.location.pathname;
@@ -69,6 +70,30 @@ function inputAveragePlaySessionData(data){
                     beginAtZero: true,
                 }
             }
+        }
+    });
+}
+
+function inputPlayerData(data, parameters){
+    const searchPlayerChart = document.getElementById('playSessionChart').getContext('2d');
+    const sessionChart = new Chart(searchPlayerChart, {
+        type: 'line',
+        data: {
+            labels: parameters,
+            datasets: [{
+                label: 'Average Play time in Minutes',
+                data: data,
+                borderColor: "rgb(62, 139, 62)",
+                borderWidth: 3,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                }
+            },
         }
     });
 }
@@ -190,12 +215,16 @@ function getCurrentOnlineUsers(){
 }
 
 function searchPlayer(input, emailTrue){
+    var userKey = "";
     if (emailTrue){
         //search for email
+        console.log(input);
         const searchQuery = query(ref(db, 'players'), orderByChild("email"), equalTo(input))
         get(searchQuery).then((snapshot)=>{
             if(snapshot.exists()){
-                console.log(snapshot.val());
+                userKey = Object.keys(snapshot.val())[0];
+
+                return getPlayerData(userKey);
             } else {
                 alert("User not found!");
                 console.log("failed");
@@ -203,15 +232,96 @@ function searchPlayer(input, emailTrue){
         })
     } else {
         //search for player username
-        const searchQuery = query(ref(db, 'players'), orderByChild("username"), equalTo(input))
+        const searchQuery = query(ref(db, 'players'), orderByChild("username"), equalTo(input), limitToFirst(1))
         get(searchQuery).then((snapshot)=>{
             if(snapshot.exists()){
                 console.log(snapshot.val());
+                userKey = Object.keys(snapshot.val())[0];
+
+                return getPlayerData(userKey);
             } else {
                 alert("User not found!");
                 console.log("failed");
             }
         })
+    }
+}
+
+function getPlayerData(userKey){
+    console.log(userKey);
+    var playerGameData = {};
+    var playerProfileData = {};
+    var playerSessionTime = {};
+
+    //gets player game data
+    const dbref = ref(db);
+    get(child(dbref, "playerGameData/" + userKey)).then((snapshot)=>{
+        if(snapshot.exists()){
+            playerGameData = snapshot.val();
+            inputGameData(playerGameData);
+        } else {
+          console.log("Not found");
+        }
+    });
+    //gets profile data
+    get(child(dbref, "playerProfileData/" + userKey)).then((snapshot)=>{
+        if(snapshot.exists()){
+            playerProfileData = snapshot.val();
+            inputProfileData(playerProfileData);
+        } else {
+          console.log("Not found");
+        }
+    });
+    //gets player session data
+    get(child(dbref, "playerSessionTime/" + userKey)).then((snapshot)=>{
+        if(snapshot.exists()){
+            playerSessionTime = snapshot.val();
+            inputSessionData(playerSessionTime);
+        } else {
+          console.log("Not found");
+        }
+    });
+
+    if (playerDataCharts.style.display === 'none'){
+        playerDataCharts.style.display = "block";
+    } else {
+        playerDataCharts.style.display = "block";
+    }
+}
+
+function inputGameData(data){
+    //get references from html for data stored in this obj & input obj data
+    $("#objectPickedText").text(data.totalObjPicked);
+    $('#throwAccuracyText').text(data.minigameStats.accuracyPercentage);
+    $('#throwAccuracyCSS').css("width", data.minigameStats.accuracyPercentage);
+    $("#totalHitsText").text(data.minigameStats.totalHits);
+    $("#longestRoundText").text(data.minigameStats.longestRoundMinutes);
+    $("#throwStreakText").text(data.minigameStats.longestThrowStreak);
+    $("#minigameHighscoreText").text(data.minigameStats.highscore);
+}
+
+function inputProfileData(data){
+    var completionArray = ["0%", "25%", "50%", "75%", "100%"];
+    $("#gameCompletionText").text(completionArray[data.completion]);
+    $("#gameCompletionCSS").css("width", completionArray[data.completion]);
+    $("#totalPlaytimeText").text(data.totalTimePlayed);
+}
+
+function inputSessionData(data){
+    var sessionLength = [];
+    var instanceName = [];
+    //iterate through each obj and gets data from each
+    for (let i=0; i<Object.keys(data).length + 1; i++){
+        
+        if (i < Object.keys(data).length){
+            const timeSpend = Object.values(data)[i].timeSpendMin;
+            const sessionName = Object.values(data)[i].dateOfSession + " , " + Object.values(data)[i].timeOfSession;
+            sessionLength.push(timeSpend);
+            instanceName.push(sessionName);
+        } else {
+            console.log(sessionLength);
+            return inputPlayerData(sessionLength, instanceName);
+        }
     }
 }
 
