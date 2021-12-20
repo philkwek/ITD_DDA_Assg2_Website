@@ -214,6 +214,51 @@ function getCurrentOnlineUsers(){
     });
 }
 
+//function that checks if input user is currently online or not
+function searchOnlineUser(userKey){
+    //query to get the latest week for data
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+
+    get(latestWeek).then((snapshot)=>{
+        if(snapshot.exists()){
+            const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var data = snapshot.val();
+            var data = Object.values(data)[0];
+            //get value of current day
+            const d = new Date();
+            var currentDay = d.getDay();
+
+            for (const property in data) {
+                //checks if iterated day is the current day
+                if (property == dates[currentDay]){
+                    console.log("day found")
+                    if (data[property].currentlyActive != null){
+                        let array = data[property].currentlyActive;
+                        console.log(array);
+                        //iterate through currentlyActive array to check for user
+                        for (var i=0; i<array.length; i++){
+                            if (array[i] == userKey){
+                                //user online
+                                $("#searchCurrentStatus").text("Online");
+                                $("#searchCurrentStatus").css("color", "rgb(62, 139, 62)");
+                                return
+                            } else {
+                                //user offline
+                                $("#searchCurrentStatus").text("Offline");
+                                $("#searchCurrentStatus").css("color", "grey");
+                            }
+                        }
+                    } 
+                } else {
+                    //user offline
+                    $("#searchCurrentStatus").text("Offline");
+                    $("#searchCurrentStatus").css("color", "grey");
+                }
+            }
+        }
+    });
+}
+
 function searchPlayer(input, emailTrue){
     var userKey = "";
     if (emailTrue){
@@ -252,6 +297,8 @@ function getPlayerData(userKey){
     var playerGameData = {};
     var playerProfileData = {};
     var playerSessionTime = {};
+
+    searchOnlineUser(userKey);
 
     //gets player game data
     const dbref = ref(db);
