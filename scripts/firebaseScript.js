@@ -57,7 +57,7 @@ function loginUser(email, password, authType){
         if(snapshot.exists()){
           if(snapshot.val().admin == "true"){
             console.log("user logged in in admin");
-            window.location.href = "../../html/adminPages/adminHomepage.html";
+            window.location.href = "../html/adminPages/adminHomepage.html";
           } else {
             console.log("user logged in is not admin");
             window.location.href = "../html/userPages/userHomepage.html";
