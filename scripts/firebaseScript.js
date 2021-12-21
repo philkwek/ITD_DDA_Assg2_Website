@@ -49,9 +49,9 @@ function loginUser(email, password, authType){
     .then((userCredential) => {
       // Signed in 
       console.log("User logged in succesfully")
+
       const user = userCredential.user;
       const dbref = ref(db);
-
       //checks if logged in user is admin or user
       get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
         if(snapshot.exists()){
@@ -148,6 +148,25 @@ onAuthStateChanged(auth, (user) => {
           $("#dropdownMenuButton").text(username);
         } else {
           console.log("Not found");
+        }
+      });
+    }
+
+    //For when user signs up and system logs user in
+    var path = window. location. pathname;
+    var page = path. split("/"). pop();
+    if(page == "signup.html"){
+      const dbref = ref(db);
+      //checks if logged in user is admin or user
+      get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
+        if(snapshot.exists()){
+          if(snapshot.val().admin == "true"){
+            console.log("user logged in in admin");
+            window.location.href = "../html/adminPages/adminHomepage.html";
+          } else {
+            console.log("user logged in is not admin");
+            window.location.href = "../html/userPages/userHomepage.html";
+          }
         }
       });
     }
