@@ -6,7 +6,9 @@
     onAuthStateChanged,
     setPersistence,
     browserSessionPersistence,
-    browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
+    browserLocalPersistence,
+    sendPasswordResetEmail,
+    deleteUser } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
 import { getDatabase, ref, child, set, update, remove, 
     get, orderByChild, orderByValue, query, limitToFirst,
     onValue, equalTo, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
@@ -18,6 +20,10 @@ const db = getDatabase();
 //Reference 
 var searchUserButton = document.getElementById("searchPlayerButton");
 var playerDataCharts = document.getElementById("playerData");
+
+var resetPasswordBtn = document.getElementById("resetPasswordBtn");
+var deleteDataBtn = document.getElementById("deleteDataBtn");
+var deleteAccountBtn = document.getElementById("deleteAccountBtn");
 
 //checks what is the currently loaded HTML page
 var path = window.location.pathname;
@@ -330,8 +336,11 @@ function getPlayerData(userKey){
     //gets player username
     get(child(dbref, "players/" + userKey)).then((snapshot)=>{
         if(snapshot.exists()){
-            var username = snapshot.val().username;
-            $("#searchUsername").text(username);
+            localStorage.clear();
+            localStorage.setItem('currentSearchUserEmail', snapshot.val().email); //stores received email in local storage for use later
+            localStorage.setItem('searchUserId', snapshot.val().userID); //stores search user id
+            localStorage.setItem('searchUsername', snapshot.val().username);
+            $("#searchUsername").text(snapshot.val().username);
         } else {
           console.log("Not found");
         }
@@ -386,7 +395,71 @@ function validateEmail(email)
         return re.test(email);
 }
 
+function sendPasswordReset(){
+    console.log("Sending email...")
+    var email = localStorage.getItem('currentSearchUserEmail'); //gets current email
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+      // Password reset email sent!
+      alert("Email Sent!");
+      // ..
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert(errorMessage);
+      // ..
+    });
+}
 
+function deleteUserData(){
+    console.log("deleting user data");
+    var userId = localStorage.getItem('searchUserId');
+    var email = localStorage.getItem('currentSearchUserEmail');
+    var username = localStorage.getItem('searchUsername');
+
+    let newPlayer = new Player(email, username, userId);
+    let newPlayerProfileData = new PlayerProfileData(0,0,0,0);
+    let newMinigameStat = new MinigameStats(0,0,0,0,0,0,0);
+    let newPlayerGameData = new PlayerGameData(0,0,newMinigameStat)
+    
+    //sets profile data
+    set(ref(db, 'players/' + userId), newPlayer)
+    .then(()=>{
+        console.log("User data written successfully");
+    })
+    .catch((error)=>{
+        console.log("Error uploading data!");
+    });
+
+    set(ref(db, 'playerProfileData/' + userId), newPlayerProfileData)
+    .then(()=>{
+        console.log("User data written successfully");
+    })
+    .catch((error)=>{
+        console.log("Error uploading data!");
+    });
+
+    set(ref(db, 'playerGameData/' + userId), newPlayerGameData)
+    .then(()=>{
+        console.log("User data written successfully");
+
+        //Reloads user data
+        const input = document.getElementById("playerSearch").value;
+        if (validateEmail(input)){
+            console.log("Email True");
+            searchPlayer(input, true);
+        } else{
+            console.log("Email false");
+            searchPlayer(input, false);
+        };
+        alert("Data successfully deleted!");
+    })
+    .catch((error)=>{
+        console.log("Error uploading data!");
+    });
+}
 
 const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
 onValue(latestWeek, (snapshot) => {
@@ -416,3 +489,20 @@ if(searchUserButton){
         };
     })
 }
+
+if(resetPasswordBtn){
+    resetPasswordBtn.addEventListener('click', function(x){
+        console.log('clicked');
+        x.preventDefault();
+        sendPasswordReset();
+    })
+}
+
+if (deleteDataBtn){
+    deleteDataBtn.addEventListener('click', function(x){
+        console.log('clicked!');
+        deleteUserData();
+
+    })
+}
+
