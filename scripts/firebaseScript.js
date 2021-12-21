@@ -55,7 +55,7 @@ function loginUser(email, password, authType){
       //checks if logged in user is admin or user
       get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
         if(snapshot.exists()){
-          if(snapshot.val().admin == "true"){
+          if(snapshot.val().admin){
             console.log("user logged in in admin");
             window.location.href = "../html/adminPages/adminHomepage.html";
           } else {
@@ -160,7 +160,7 @@ onAuthStateChanged(auth, (user) => {
       //checks if logged in user is admin or user
       get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
         if(snapshot.exists()){
-          if(snapshot.val().admin == "true"){
+          if(snapshot.val().admin){
             console.log("user logged in in admin");
             window.location.href = "../html/adminPages/adminHomepage.html";
           } else {
