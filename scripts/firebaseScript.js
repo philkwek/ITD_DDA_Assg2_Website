@@ -60,7 +60,7 @@ function loginUser(email, password, authType){
             window.location.href = "../../html/adminPages/adminHomepage.html";
           } else {
             console.log("user logged in is not admin");
-            window.location.href = "../../html/userPages/userHomepage.html";
+            window.location.href = "../html/userPages/userHomepage.html";
           }
         }
       });
