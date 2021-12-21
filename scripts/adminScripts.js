@@ -280,9 +280,8 @@ function searchPlayer(input, emailTrue){
         const searchQuery = query(ref(db, 'players'), orderByChild("username"), equalTo(input), limitToFirst(1))
         get(searchQuery).then((snapshot)=>{
             if(snapshot.exists()){
-                console.log(snapshot.val());
                 userKey = Object.keys(snapshot.val())[0];
-
+                console.log(userKey);
                 return getPlayerData(userKey);
             } else {
                 alert("User not found!");
@@ -324,6 +323,15 @@ function getPlayerData(userKey){
         if(snapshot.exists()){
             playerSessionTime = snapshot.val();
             inputSessionData(playerSessionTime);
+        } else {
+          console.log("Not found");
+        }
+    });
+    //gets player username
+    get(child(dbref, "players/" + userKey)).then((snapshot)=>{
+        if(snapshot.exists()){
+            var username = snapshot.val().username;
+            $("#searchUsername").text(username);
         } else {
           console.log("Not found");
         }

@@ -201,8 +201,14 @@ function getPlayerData(userKey){
     //gets player email
     get(child(dbref, "players/" + userKey)).then((snapshot)=>{
         if(snapshot.exists()){
-            var email = snapshot.val().email;
-            $("#searchEmail").text(email);
+            var emailHTML = document.getElementById("searchEmail");
+            var usernameHTML = document.getElementById("searchUsername");
+            if (emailHTML){
+                $("#searchEmail").text(snapshot.val().email);
+            } else if (usernameHTML){
+                $("#searchUsername").text(snapshot.val().username);
+            }
+            
         } else {
           console.log("Not found");
         }
