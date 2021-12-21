@@ -384,7 +384,9 @@ function validateEmail(email)
     {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
-    }
+}
+
+
 
 const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
 onValue(latestWeek, (snapshot) => {
