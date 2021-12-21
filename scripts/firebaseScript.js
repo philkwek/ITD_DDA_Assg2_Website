@@ -116,16 +116,6 @@ function writeUserData(userId, username, email) {
         console.log("Error uploading data!");
     });
 
-    set(ref(db, 'playerSessionTime/' + userId), {
-      "firstInstance": "firstInstance"
-    })
-    .then(()=>{
-        console.log("User data written successfully");
-    })
-    .catch((error)=>{
-        console.log("Error uploading data!");
-    });
-
     set(ref(db, 'playerProfileData/' + userId), newPlayerProfileData)
     .then(()=>{
         console.log("User data written successfully");
