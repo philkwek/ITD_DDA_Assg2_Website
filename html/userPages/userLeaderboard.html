@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Save the Earth | Leaderboard</title>
+    <link href="../../style.css" rel="stylesheet" type="text/css"/>
+    <link href="../../css/homePage.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CDN reference for jQuery min-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified js for Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" 
+    integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+
+    <!-- CDN reference for Chart.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="sidebar-container">
+      <div class="sidebar-logo">
+        Save the Earth!
+        <br>User Dashboard
+      </div>
+      <ul class="sidebar-navigation">
+        <li class="header">Navigation</li>
+        <li>
+          <a href="userHomepage.html">
+            <i class="fa fa-home" aria-hidden="true"></i> Profile
+          </a>
+        </li>
+        <li>
+          <a href="userLeaderboard.html">
+            <i class="fa fa-home" aria-hidden="true"></i> Leaderboard
+          </a>
+        </li>
+        <li>
+          <a href="userSearch.html">
+            <i class="fa fa-tachometer" aria-hidden="true"></i> Search other Players
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div id="mainBody" class="container-fluid">
+
+      <div class="row m-1 mt-4">
+        <div class="col">
+          <p id="onlineUsers">Online Users: <span id="noOfOnlineUsers">Null</span></p>
+        </div>
+        <div class="col" id="userProfile">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Username
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" id="logoutButton" href="#">Log out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-1 mt-2">
+        <table id="ingameTimeLeaderboard" class="table table-success table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">Total Time Ingame</th>
+            </tr>
+          </thead>
+          <tbody id="ingameTimeContent">
+            
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row m-1 mt-2">
+        <table id="minigameHighscoreLeaderboard" class="table table-warning table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">Minigame High Score</th>
+            </tr>
+          </thead>
+          <tbody id="minigameHighscoreContent">
+            
+          </tbody>
+        </table>
+      </div>
+
+      
+
+    </div>
+
+  </body>
+  
+  <!-- References for scripts -->
+  <script src="../../scripts/objects/playerObject.js"></script>
+  <script src="../../script.js"></script>
+  <script type="module" src = "../../scripts/config.js"></script>
+  <script type="module" src = "../../scripts/firebaseScript.js"></script>
+  <script type="module" src = "../../scripts/userScripts.js"></script>
+  
+</html>

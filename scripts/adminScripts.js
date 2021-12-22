@@ -124,6 +124,9 @@ function getDailyActiveUsers(){
             var iteration = -1;
             for (const property in data) {
                 iteration += 1;
+
+                const d = new Date();
+                let day = d.getDay()
                 //checks if wasActive property exists, if it does, get the number and place it in respective
                 // value in array
                 if (data[property].wasActive != null){
@@ -131,6 +134,10 @@ function getDailyActiveUsers(){
                     for (let i=0; i<dates.length; i++){
                         if (property == dates[i]){
                             weeklyData[i] = playerCount;
+                        }
+                        if (day == i){ //if day is today, add player count to html div
+                            console.log('today');
+                            $("#totalActivePlayers").text(playerCount);
                         }
                     }
                 }
@@ -159,6 +166,9 @@ function getPlayerSessionAvg(){
             var data = Object.values(data)[0];
             console.log(data);
 
+            const d = new Date();
+            let day = d.getDay()
+
             //function iterates through obj to get total session time for that day before calculating avg
             let iteration = -1;
             for (const property in data){
@@ -167,12 +177,17 @@ function getPlayerSessionAvg(){
                 if (data[property].wasActive == null){
                     var averageTime = 0;
                 } else {
-                    var averageTime = data[property].totalPlaySession/data[property].wasActive.length;
+                    var totalTime = data[property].totalPlaySession;
+                    var averageTime = totalTime/data[property].wasActive.length;
                 }
                 //finds correct day to input into array
                 for (let x=0; x<dates.length; x++){
                     if (property == dates[x]){
                         weeklyAvg[x] = averageTime;
+                    }
+
+                    if(day == x){
+                        $("#totalTimePlayedText").text(totalTime);
                     }
                 }
             }
