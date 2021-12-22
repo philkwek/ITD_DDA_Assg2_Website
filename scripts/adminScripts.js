@@ -23,7 +23,8 @@ var playerDataCharts = document.getElementById("playerData");
 
 var resetPasswordBtn = document.getElementById("resetPasswordBtn");
 var deleteDataBtn = document.getElementById("deleteDataBtn");
-var deleteAccountBtn = document.getElementById("deleteAccountBtn");
+var promoteUserBtn = document.getElementById("promoteAdminBtn");
+
 
 //checks what is the currently loaded HTML page
 var path = window.location.pathname;
@@ -340,7 +341,18 @@ function getPlayerData(userKey){
             localStorage.setItem('currentSearchUserEmail', snapshot.val().email); //stores received email in local storage for use later
             localStorage.setItem('searchUserId', snapshot.val().userID); //stores search user id
             localStorage.setItem('searchUsername', snapshot.val().username);
-            $("#searchUsername").text(snapshot.val().username);
+            localStorage.setItem('searchUserAdmin', snapshot.val().admin);
+            if (snapshot.val().admin){
+                var admin = "Admin";
+                $("#promoteAdminTextBtn").text("Demote to User");
+                $("#promoteAdminTextBody").text("Are you sure you want to demote this User to an User?")
+                
+            } else {
+                var admin = "User";
+                $("#promoteAdminTextBtn").text("Promote to Admin");
+                $("#promoteAdminTextBody").text("Are you sure you want to promote this User to an Admin?")
+            }
+            $("#searchUsername").text(snapshot.val().username + " (" + admin + ")");
         } else {
           console.log("Not found");
         }
@@ -461,6 +473,32 @@ function deleteUserData(){
     });
 }
 
+function promoteUser(){
+    var userId = localStorage.getItem('searchUserId');
+    var admin = localStorage.getItem('searchUserAdmin');
+
+    if (admin == "true"){
+        localStorage.setItem('searchUserAdmin', false)
+        set(ref(db, 'players/' + userId + "/admin"), false)
+        .then(()=>{
+            console.log("User demoted to user");
+        })
+        .catch((error)=>{
+            console.log("Error uploading data!");
+        });
+    } else if (admin == "false") {
+        localStorage.setItem('searchUserAdmin', true)
+        set(ref(db, 'players/' + userId + "/admin"), true)
+        .then(()=>{
+            console.log("User promoted to admin");
+        })
+        .catch((error)=>{
+            console.log("Error uploading data!");
+        });
+    }
+    
+}
+
 const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
 onValue(latestWeek, (snapshot) => {
     if(page == "adminHomepage.html"){
@@ -503,6 +541,13 @@ if (deleteDataBtn){
         console.log('clicked!');
         deleteUserData();
 
+    })
+}
+
+if (promoteUserBtn){
+    promoteUserBtn.addEventListener('click', function(x){
+        console.log('clicked!');
+        promoteUser();
     })
 }
 
