@@ -103,7 +103,7 @@ function forgotPassword(email){
 //function for writing user data into the realtimeDB
 function writeUserData(userId, username, email) {
     let newPlayer = new Player(email, username, userId);
-    let newPlayerProfileData = new PlayerProfileData(0,0,0,0);
+    let newPlayerProfileData = new PlayerProfileData(0,0,0,0, username);
     let newMinigameStat = new MinigameStats(0,0,0,0,0,0,0);
     let newPlayerGameData = new PlayerGameData(0,0,newMinigameStat)
     

@@ -213,11 +213,12 @@ function getPlayerData(userKey){
           console.log("Not found");
         }
     });
-
-    if (playerDataCharts.style.display === 'none'){
-        playerDataCharts.style.display = "block";
-    } else {
-        playerDataCharts.style.display = "block";
+    if (playerDataCharts){
+        if (playerDataCharts.style.display === 'none'){
+            playerDataCharts.style.display = "block";
+        } else {
+            playerDataCharts.style.display = "block";
+        }
     }
 }
 
@@ -261,9 +262,80 @@ function validateEmail(email)
     {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
-    }
+}
+
+function populateTimeLeaderboard(){
+    const timeSearch = query(ref(db, 'playerProfileData'), orderByChild("totalTimePlayed"), limitToFirst(10))
+    get(timeSearch).then((snapshot)=>{
+        if(snapshot.exists()){
+            var arrayToReverse = []; //used to store data to be reversed
+            var timeBoard = document.getElementById("ingameTimeContent");
+            var snapshotContent = "";
+            var position = 0;
+
+            snapshot.forEach((childSnapshot) => {
+                arrayToReverse.push(childSnapshot.val());
+            });
+
+            arrayToReverse.reverse();
+
+            for (let i = 0; i < arrayToReverse.length; i++){
+                var obj = arrayToReverse[i];
+                position += 1;
+                snapshotContent += `<tr>
+                <td>${position}</td>
+                <td>${obj.username}</td>
+                <td>${obj.totalTimePlayed}</td>
+                </tr>`;
+            }
+            timeBoard.innerHTML = snapshotContent;
+            
+        } else {
+          console.log("Not found");
+        }
+    });
+}
+
+function populateMinigameHighscore(){
+    const timeSearch = query(ref(db, 'playerGameData'), orderByChild("highscore"), limitToFirst(10))
+    get(timeSearch).then((snapshot)=>{
+        if(snapshot.exists()){
+            var arrayToReverse = []; //used to store data to be reversed
+            var timeBoard = document.getElementById("minigameHighscoreContent");
+            var snapshotContent = "";
+            var position = 0;
+
+            snapshot.forEach((childSnapshot) => {
+                arrayToReverse.push(childSnapshot.val());
+            });
+
+            arrayToReverse.reverse();
+
+            for (let i = 0; i < arrayToReverse.length; i++){
+                var obj = arrayToReverse[i];
+                position += 1;
+                snapshotContent += `<tr>
+                <td>${position}</td>
+                <td>${obj.username}</td>
+                <td>${obj.totalTimePlayed}</td>
+                </tr>`;
+            }
+            timeBoard.innerHTML = snapshotContent;
+            
+        } else {
+          console.log("Not found");
+        }
+    });
+}
+
 
 getCurrentOnlineUsers();
+
+var path = window.location.pathname;
+var page = path.split("/").pop();
+if (page == "userLeaderboard.html"){
+    populateTimeLeaderboard();
+}
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
