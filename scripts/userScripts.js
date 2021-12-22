@@ -310,6 +310,7 @@ function populateMinigameHighscore(){
             });
 
             arrayToReverse.reverse();
+            console.log(arrayToReverse);
 
             for (let i = 0; i < arrayToReverse.length; i++){
                 var obj = arrayToReverse[i];
@@ -317,7 +318,7 @@ function populateMinigameHighscore(){
                 snapshotContent += `<tr>
                 <td>${position}</td>
                 <td>${obj.username}</td>
-                <td>${obj.totalTimePlayed}</td>
+                <td>${obj.minigameStats.highscore}</td>
                 </tr>`;
             }
             timeBoard.innerHTML = snapshotContent;
@@ -335,6 +336,7 @@ var path = window.location.pathname;
 var page = path.split("/").pop();
 if (page == "userLeaderboard.html"){
     populateTimeLeaderboard();
+    populateMinigameHighscore();
 }
 
 onAuthStateChanged(auth, (user) => {

@@ -105,7 +105,7 @@ function writeUserData(userId, username, email) {
     let newPlayer = new Player(email, username, userId);
     let newPlayerProfileData = new PlayerProfileData(0,0,0,0, username);
     let newMinigameStat = new MinigameStats(0,0,0,0,0,0,0);
-    let newPlayerGameData = new PlayerGameData(0,0,newMinigameStat)
+    let newPlayerGameData = new PlayerGameData(0,0,newMinigameStat, username)
     
     //sets profile data
     set(ref(db, 'players/' + userId), newPlayer)
