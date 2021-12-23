@@ -26,6 +26,8 @@ var resetPasswordBtn = document.getElementById("resetPasswordBtn");
 var deleteDataBtn = document.getElementById("deleteDataBtn");
 var promoteUserBtn = document.getElementById("promoteAdminBtn");
 
+var editStartTimeBtn = document.getElementById("editStartTimeBtn");
+
 
 //checks what is the currently loaded HTML page
 var path = window.location.pathname;
@@ -587,10 +589,45 @@ function promoteUser(){
     
 }
 
-const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
+function getCurrentStartTime(){
+    const dbref = ref(db);
+    get(child(dbref, "gameParameters/recycle")).then((snapshot)=>{
+        if(snapshot.exists()){
+            var currentVal = snapshot.val().startingTime;
+            $("#currentStartTimeText").text("Current value is " + currentVal + "s");
+        } else{
+            console.log("Doesnt exist");
+        }
+    });
+}
+
+function editRecycleStartTime(time){
+    var floatTime = parseFloat(time);
+    //sets profile data
+    set(ref(db, "gameParameters/recycle"), {
+        startingTime: floatTime
+    })
+    .then(()=>{
+        console.log("Game data written successfully");
+    })
+    .catch((error)=>{
+        console.log("Error uploading data!");
+    });
+}
+
+const latestWeek = query(ref(db, 'weeklyActive'));
 onValue(latestWeek, (snapshot) => {
-    if(page == "adminHomepage.html"){
-        getCurrentOnlineUsers();
+    getCurrentOnlineUsers();
+    if(page == "adminPlayerManagement.html"){
+        getUserDataTable();
+    }
+})
+
+const newestGameData = query(ref(db, 'gameParameters'));
+onValue(newestGameData, (snapshot) => {
+    getCurrentOnlineUsers();
+    if(page == "adminGameManagement.html"){
+        getCurrentStartTime();
     }
 })
 
@@ -598,12 +635,15 @@ getCurrentOnlineUsers();
 
 if(page == "adminHomepage.html"){
     getDailyActiveUsers();
- 
     getPlayerSessionAvg();
 }
 
 if (page == "adminPlayerManagement.html" && playerListTable){
     populateUserTable();
+}
+
+if (page == "adminGameManagement.html"){
+    getCurrentStartTime();
 }
 
 if(searchUserButton){
@@ -640,6 +680,12 @@ if (promoteUserBtn){
     promoteUserBtn.addEventListener('click', function(x){
         console.log('clicked!');
         promoteUser();
+    })
+}
+
+if (editStartTimeBtn){
+    editStartTimeBtn.addEventListener('click', function(x){
+        editRecycleStartTime(document.getElementById("editStartTimeText").value);
     })
 }
 
