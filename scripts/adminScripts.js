@@ -11,7 +11,7 @@
     deleteUser } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
 import { getDatabase, ref, child, set, update, remove, 
     get, orderByChild, orderByValue, query, limitToFirst,
-    onValue, equalTo, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
+    onValue, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
 //Reference the imports
 const auth = getAuth();
@@ -112,7 +112,7 @@ function getDailyActiveUsers(){
     const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     //query to get the latest week for data
-    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
 
     //gets data for current week
     get(latestWeek).then((snapshot)=>{
@@ -157,14 +157,13 @@ function getPlayerSessionAvg(){
     const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     //query to get the latest week for data
-    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1));
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1));
 
     //gets data for current week
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
             var data = snapshot.val();
             var data = Object.values(data)[0];
-            console.log(data);
 
             const d = new Date();
             let day = d.getDay()
@@ -204,7 +203,7 @@ function getPlayerSessionAvg(){
 //this function gets current number of online players
 function getCurrentOnlineUsers(){
     //query to get the latest week for data
-    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
 
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
@@ -239,7 +238,7 @@ function getCurrentOnlineUsers(){
 //function that checks if input user is currently online or not
 function searchOnlineUser(userKey){
     //query to get the latest week for data
-    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
 
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
@@ -514,7 +513,7 @@ function promoteUser(){
     
 }
 
-const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
 onValue(latestWeek, (snapshot) => {
     if(page == "adminHomepage.html"){
         getCurrentOnlineUsers();

@@ -9,7 +9,7 @@
     browserLocalPersistence, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
 import { getDatabase, ref, child, set, update, remove, 
     get, orderByChild, orderByValue, query, limitToFirst,
-    onValue, equalTo, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
+    onValue, equalTo, limitToLast } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
 //Reference the imports
 const auth = getAuth();
@@ -52,7 +52,7 @@ function inputPlayerData(data, parameters){
 //this function gets current number of online players
 function getCurrentOnlineUsers(){
     //query to get the latest week for data
-    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
 
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
@@ -87,7 +87,7 @@ function getCurrentOnlineUsers(){
 //function that checks if input user is currently online or not
 function searchOnlineUser(userKey){
     //query to get the latest week for data
-    const latestWeek = query(ref(db, 'weeklyActive'), orderByValue("weekNumber"), limitToFirst(1))
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
 
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
@@ -297,7 +297,7 @@ function populateTimeLeaderboard(){
 }
 
 function populateMinigameHighscore(){
-    const timeSearch = query(ref(db, 'playerGameData'), orderByChild("highscore"), limitToFirst(10))
+    const timeSearch = query(ref(db, 'playerGameData'), orderByChild("highscore"), limitToLast(10))
     get(timeSearch).then((snapshot)=>{
         if(snapshot.exists()){
             var arrayToReverse = []; //used to store data to be reversed
