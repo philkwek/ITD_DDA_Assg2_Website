@@ -20,6 +20,7 @@ const db = getDatabase();
 //Reference 
 var searchUserButton = document.getElementById("searchPlayerButton");
 var playerDataCharts = document.getElementById("playerData");
+var playerListTable = document.getElementById("playerList");
 
 var resetPasswordBtn = document.getElementById("resetPasswordBtn");
 var deleteDataBtn = document.getElementById("deleteDataBtn");
@@ -374,9 +375,8 @@ function getPlayerData(userKey){
 
     if (playerDataCharts.style.display === 'none'){
         playerDataCharts.style.display = "block";
-    } else {
-        playerDataCharts.style.display = "block";
-    }
+        playerListTable.style.display = "none";
+    };
 }
 
 function inputGameData(data){
