@@ -139,7 +139,6 @@ function getDailyActiveUsers(){
                             weeklyData[i] = playerCount;
                         }
                         if (day == i){ //if day is today, add player count to html div
-                            console.log('today');
                             $("#totalActivePlayers").text(playerCount);
                         }
                     }
@@ -319,7 +318,6 @@ function populateUserTable(){
 }
 
 function getUserDataTable(currentlyOnline){
-    console.log(currentlyOnline);
     //gets data of all players to populate leaderboard
     const userData = query(ref(db, 'playerProfileData'));
     get(userData).then((snapshot) => {
@@ -329,7 +327,6 @@ function getUserDataTable(currentlyOnline){
             var tableContent = "";
             
             for (let i = 0; i<Object.keys(data).length; i++){
-                console.log(Object.keys(data)[i]);
                 //first checks if current user is an online user from currentlyOnline array
                 if(currentlyOnline != null){
                     for (let x = 0; x<currentlyOnline.length; x++){
