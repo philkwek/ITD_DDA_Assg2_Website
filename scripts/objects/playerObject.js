@@ -23,11 +23,12 @@ function PlayerProfileData(totalTimePlayed, noOfTaskCompleted, noOfMinigamesComp
 
 }
 
-function PlayerGameData(totalObjPicked, noOfCraftsMade, minigameStats, username) {
+function PlayerGameData(totalObjPicked, noOfCraftsMade, minigameStats, username, minigameHighscore) {
     this.totalObjPicked = totalObjPicked;
     this.noOfCraftsMade = noOfCraftsMade;
     this.minigameStats = minigameStats;
     this.username = username;
+    this.minigameHighscore = minigameHighscore;
 }
 
 function MinigameStats(highscore, totalThrows, totalHits, totalMiss, 

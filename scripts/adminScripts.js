@@ -331,24 +331,36 @@ function getUserDataTable(currentlyOnline){
             for (let i = 0; i<Object.keys(data).length; i++){
                 console.log(Object.keys(data)[i]);
                 //first checks if current user is an online user from currentlyOnline array
-                for (let x = 0; x<currentlyOnline.length; x++){
-                    var completionPercent = Object.values(data)[i].completion/4 * 100;
-                    if (Object.keys(data)[i] == currentlyOnline[x]){
-                        tableContent += `<tr>
-                        <td>${Object.values(data)[i].username}</td>
-                        <td style="color: green;">${"Online"}</td>
-                        <td>${completionPercent + "%"}</td>
-                        <td>${Object.values(data)[i].totalTimePlayed}</td>
-                        </tr>`;
-                    } else {
-                        tableContent += `<tr>
-                        <td>${Object.values(data)[i].username}</td>
-                        <td>${"Offline"}</td>
-                        <td>${completionPercent + "%"}</td>
-                        <td>${Object.values(data)[i].totalTimePlayed}</td>
-                        </tr>`;
+                if(currentlyOnline != null){
+                    for (let x = 0; x<currentlyOnline.length; x++){
+                        var completionPercent = Object.values(data)[i].completion/4 * 100;
+                        if (Object.keys(data)[i] == currentlyOnline[x]){
+                            tableContent += `<tr>
+                            <td>${Object.values(data)[i].username}</td>
+                            <td style="color: green;">${"Online"}</td>
+                            <td>${completionPercent + "%"}</td>
+                            <td>${Object.values(data)[i].totalTimePlayed}</td>
+                            </tr>`;
+                        } else {
+                            tableContent += `<tr>
+                            <td>${Object.values(data)[i].username}</td>
+                            <td>${"Offline"}</td>
+                            <td>${completionPercent + "%"}</td>
+                            <td>${Object.values(data)[i].totalTimePlayed}</td>
+                            </tr>`;
+                        }
                     }
+                } else {
+                    var completionPercent = Object.values(data)[i].completion/4 * 100;
+                    tableContent += `<tr>
+                    <td>${Object.values(data)[i].username}</td>
+                    <td>${"Offline"}</td>
+                    <td>${completionPercent + "%"}</td>
+                    <td>${Object.values(data)[i].totalTimePlayed}</td>
+                    </tr>`;
+
                 }
+                
             }
             playerBoard.innerHTML = tableContent;
 
