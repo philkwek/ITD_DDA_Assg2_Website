@@ -56,7 +56,7 @@ function getCurrentOnlineUsers(){
 
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
-            const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
             var data = snapshot.val();
             var data = Object.values(data)[0];
             //get value of current day
@@ -91,7 +91,7 @@ function searchOnlineUser(userKey){
 
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
-            const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
             var data = snapshot.val();
             var data = Object.values(data)[0];
             //get value of current day
@@ -134,7 +134,7 @@ function searchPlayer(input, emailTrue){
     if (emailTrue){
         //search for email
         console.log(input);
-        const searchQuery = query(ref(db, 'players'), orderByChild("email"), equalTo(input))
+        const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         get(searchQuery).then((snapshot)=>{
             if(snapshot.exists()){
                 userKey = Object.keys(snapshot.val())[0];
@@ -338,6 +338,21 @@ if (page == "userLeaderboard.html"){
     populateTimeLeaderboard();
     populateMinigameHighscore();
 }
+
+const latestWeek = query(ref(db, 'weeklyActive'));
+onValue(latestWeek, (snapshot) => {
+    getCurrentOnlineUsers();
+    if (page == "userSearch.html"){
+        const input = document.getElementById("playerSearch").value;
+        if (validateEmail(input)){
+            console.log("Email True");
+            searchPlayer(input, true);
+        } else{
+            console.log("Email false");
+            searchPlayer(input, false);
+        };
+    }
+})
 
 onAuthStateChanged(auth, (user) => {
     if (user) {

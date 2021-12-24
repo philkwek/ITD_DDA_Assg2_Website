@@ -112,7 +112,7 @@ function inputPlayerData(data, parameters){
 function getDailyActiveUsers(){
 
     let weeklyData = [0,0,0,0,0,0,0];
-    const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     //query to get the latest week for data
     const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
@@ -156,7 +156,7 @@ function getDailyActiveUsers(){
 function getPlayerSessionAvg(){
     
     let weeklyAvg = [0,0,0,0,0,0,0];
-    const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     //query to get the latest week for data
     const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1));
@@ -209,7 +209,7 @@ function getCurrentOnlineUsers(){
 
     get(latestWeek).then((snapshot)=>{
         if(snapshot.exists()){
-            const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
             var data = snapshot.val();
             var data = Object.values(data)[0];
             //get value of current day
@@ -286,7 +286,7 @@ function searchOnlineUser(userKey){
 function populateUserTable(){
     var currentlyOnlineUsers;
     //gets list of currently online users first
-    const dates = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
     //gets data for current week
     get(latestWeek).then((snapshot)=>{
@@ -617,7 +617,7 @@ function editRecycleStartTime(time){
         startingTime: floatTime
     })
     .then(()=>{
-        console.log("Game data written successfully");
+        alert("Parameter updated!");
     })
     .catch((error)=>{
         console.log("Error uploading data!");
@@ -629,6 +629,9 @@ onValue(latestWeek, (snapshot) => {
     getCurrentOnlineUsers();
     if(page == "adminPlayerManagement.html"){
         getUserDataTable();
+    }
+    if (page == "adminPlayerManagement.html"){
+        populateUserTable();
     }
 })
 
