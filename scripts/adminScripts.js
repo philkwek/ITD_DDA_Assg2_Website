@@ -40,7 +40,7 @@ function inputActiveUsersData(data){
     const activeChart = new Chart(activeUsersChart, {
         type: 'line',
         data: {
-            labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
             datasets: [{
                 label: 'Total Active Users',
                 data: data,
@@ -65,7 +65,7 @@ function inputAveragePlaySessionData(data){
     const playerChart = new Chart(playerSessionChart, {
         type: 'line',
         data: {
-            labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
             datasets: [{
                 label: 'Average Play time in Minutes',
                 data: data,
