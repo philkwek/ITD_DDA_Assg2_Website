@@ -9,7 +9,8 @@
       setPersistence,
       browserSessionPersistence,
       browserLocalPersistence,
-      sendPasswordResetEmail, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
+      sendPasswordResetEmail,
+      updateEmail, } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-auth.js";
  import { getDatabase, ref, child, set, update, remove, get, orderByChild } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"
 
 //Reference the izmports
@@ -23,6 +24,8 @@
  var rememberMeState = document.getElementById("rememberMe"); //checkbox
  var resetPasswordButton = document.getElementById("resetPasswordButton");
  var usernamePlace = document.getElementById("dropdownMenuButton");
+ var changeEmailButton = document.getElementById("newEmailConfirmBtn");
+ var changeUsernameButton = document.getElementById("newUsernameConfirmBtn");
 
 // Functions
 function signUpUser(email, username, password, authType){
@@ -176,6 +179,51 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
+function changeEmail(newEmail) {
+  const auth = getAuth();
+  updateEmail(auth.currentUser, newEmail).then(() => {
+    // Email updated!
+    const emailUpdate = {};
+    emailUpdate['/players/' + auth.currentUser.uid + "/email"] = newEmail;
+    update(ref(db), emailUpdate);
+    // ...
+    alert("Email updated!");
+  }).catch((error) => {
+    // An error occurred
+    // ...
+    alert("Email update failed");
+  });
+}
+
+function changeUsername(newUsername){
+  const auth = getAuth();
+  const uid = auth.currentUser.uid;
+  
+  const usernameUpdate = {};
+  usernameUpdate['/playerGameData/' + uid + "/username"] = newUsername;
+  usernameUpdate['/playerProfileData/' + uid + "/username"] = newUsername;
+  usernameUpdate['/players/' + uid + "/username"] = newUsername;
+  return update(ref(db), usernameUpdate);
+}
+
+if (changeEmailButton){
+  changeEmailButton.addEventListener("click", function(x){
+    console.log("email button clicked");
+    x.preventDefault();
+    var newEmail = document.getElementById("newEmailText").value;
+    changeEmail(newEmail);
+  })
+}
+
+if (changeUsernameButton){
+  changeUsernameButton.addEventListener("click", function(x){
+    console.log("username button clicked");
+    x.preventDefault();
+    var newUsername = document.getElementById("newUsernameText").value;
+    changeUsername(newUsername);
+  })
+}
+
 
 
 if (signUpButton){
@@ -238,7 +286,6 @@ if (resetPasswordButton){
       } else {
         forgotPassword(emailInput);
       }
-     
     })
 };
 
