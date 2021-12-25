@@ -329,6 +329,89 @@ function populateMinigameHighscore(){
     });
 }
 
+//function populates user list table
+function populateUserTable(){
+    var currentlyOnlineUsers;
+    //gets list of currently online users first
+    const dates = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const latestWeek = query(ref(db, 'weeklyActive'), orderByChild("weekNumber"), limitToLast(1))
+    //gets data for current week
+    get(latestWeek).then((snapshot)=>{
+        if(snapshot.exists()){
+            var data = snapshot.val();
+            var data = Object.values(data)[0];
+            //get value of current day
+            const d = new Date();
+            var currentDay = d.getDay();
+            
+            var iteration = -1;
+            for (const property in data) {
+                iteration += 1;
+                //checks if iterated day is the current day
+                if (property == dates[currentDay]){
+                    if (data[property].currentlyActive != null){
+                        currentlyOnlineUsers = data[property].currentlyActive;
+                        return getUserDataTable(currentlyOnlineUsers);
+                    } 
+                } else {
+                    currentlyOnlineUsers = null;
+                    return getUserDataTable(null);
+                }
+            }
+        } else {
+            console.log("Snapshot does not exist");
+        }
+    });
+}
+
+function getUserDataTable(currentlyOnline){
+    //gets data of all players to populate leaderboard
+    const userData = query(ref(db, 'playerProfileData'));
+    get(userData).then((snapshot) => {
+        if (snapshot.exists()){
+            var data = snapshot.val();
+            var playerBoard = document.getElementById("playerListTableContent");
+            var tableContent = "";
+            
+            for (let i = 0; i<Object.keys(data).length; i++){
+                //first checks if current user is an online user from currentlyOnline array
+                if(currentlyOnline != null){
+                    for (let x = 0; x<currentlyOnline.length; x++){
+                        var completionPercent = Object.values(data)[i].completion/4 * 100;
+                        if (Object.keys(data)[i] == currentlyOnline[x]){
+                            tableContent += `<tr>
+                            <td>${Object.values(data)[i].username}</td>
+                            <td style="color: green;">${"Online"}</td>
+                            <td>${completionPercent + "%"}</td>
+                            <td>${Object.values(data)[i].totalTimePlayed}</td>
+                            </tr>`;
+                        } else {
+                            tableContent += `<tr>
+                            <td>${Object.values(data)[i].username}</td>
+                            <td>${"Offline"}</td>
+                            <td>${completionPercent + "%"}</td>
+                            <td>${Object.values(data)[i].totalTimePlayed}</td>
+                            </tr>`;
+                        }
+                    }
+                } else {
+                    var completionPercent = Object.values(data)[i].completion/4 * 100;
+                    tableContent += `<tr>
+                    <td>${Object.values(data)[i].username}</td>
+                    <td>${"Offline"}</td>
+                    <td>${completionPercent + "%"}</td>
+                    <td>${Object.values(data)[i].totalTimePlayed}</td>
+                    </tr>`;
+
+                }
+                
+            }
+            playerBoard.innerHTML = tableContent;
+
+        }
+    });
+}
+
 
 getCurrentOnlineUsers();
 
@@ -351,6 +434,9 @@ onValue(latestWeek, (snapshot) => {
             console.log("Email false");
             searchPlayer(input, false);
         };
+    }
+    if (page == "userLeaderboard.html"){
+        populateUserTable();
     }
 })
 

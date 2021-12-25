@@ -136,7 +136,26 @@
         </div>
       </div>
 
-      <div class="row m-1 mt-2">
+      <div id = "playerList" style="display: block">
+        <div class="row m-3 mt-2">
+          <caption>All Players</caption>
+          <table id="playerListTable" class="table table-primary table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Currently Active</th>
+                <th scope="col">Game Completion</th>
+                <th scope="col">Total Time Played (Min)</th>
+              </tr>
+            </thead>
+            <tbody id="playerListTableContent">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row m-3 mt-2">
         <caption>Most time spent Ingame</caption>
         <table id="ingameTimeLeaderboard" class="table table-success table-striped">
           <thead>
@@ -152,7 +171,7 @@
         </table>
       </div>
 
-      <div class="row m-1 mt-2">
+      <div class="row m-3 mt-2">
         <caption>Highest score for Recycle Minigame</caption>
         <table id="minigameHighscoreLeaderboard" class="table table-warning table-striped">
           <thead>
