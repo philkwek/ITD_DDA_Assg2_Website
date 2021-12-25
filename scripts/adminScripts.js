@@ -645,7 +645,7 @@ onValue(newestGameData, (snapshot) => {
 
 const newPlayers = query(ref(db, "players"));
 onValue(newPlayers, (snapshot) =>{
-    getCurrentlyOnlineUsers();
+    getCurrentOnlineUsers();
     if(page == "adminPlayerManagement.html"){
         populateUserTable();
     }
