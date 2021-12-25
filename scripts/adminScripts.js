@@ -130,7 +130,10 @@ function getDailyActiveUsers(){
                 iteration += 1;
 
                 const d = new Date();
-                let day = d.getDay()
+                var day = d.getDay() - 1;
+                if (day == -1){
+                    day = 7
+                }
                 //checks if wasActive property exists, if it does, get the number and place it in respective
                 // value in array
                 if (data[property].wasActive != null){
@@ -169,7 +172,10 @@ function getPlayerSessionAvg(){
             var data = Object.values(data)[0];
 
             const d = new Date();
-            let day = d.getDay()
+            var day = d.getDay() - 1;
+            if (day == -1){
+                day = 7
+            }
 
             //function iterates through obj to get total session time for that day before calculating avg
             let iteration = -1;
@@ -253,7 +259,10 @@ function searchOnlineUser(userKey){
             var data = Object.values(data)[0];
             //get value of current day
             const d = new Date();
-            var currentDay = d.getDay();
+            var currentDay = d.getDay() - 1;
+            if (currentDay == -1){
+                currentDay = 7
+            }
 
             for (const property in data) {
                 //checks if iterated day is the current day
