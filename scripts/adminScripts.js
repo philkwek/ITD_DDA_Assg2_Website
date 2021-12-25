@@ -22,6 +22,7 @@ var searchUserButton = document.getElementById("searchPlayerButton");
 var playerDataCharts = document.getElementById("playerData");
 var playerListTable = document.getElementById("playerList");
 
+var backBtn = document.getElementById("playerBackBtn");
 var resetPasswordBtn = document.getElementById("resetPasswordBtn");
 var deleteDataBtn = document.getElementById("deleteDataBtn");
 var promoteUserBtn = document.getElementById("promoteAdminBtn");
@@ -325,22 +326,24 @@ function getUserDataTable(currentlyOnline){
             var data = snapshot.val();
             var playerBoard = document.getElementById("playerListTableContent");
             var tableContent = "";
-            
+            var players = [];
             for (let i = 0; i<Object.keys(data).length; i++){
                 //first checks if current user is an online user from currentlyOnline array
                 if(currentlyOnline != null){
                     for (let x = 0; x<currentlyOnline.length; x++){
                         var completionPercent = Object.values(data)[i].completion/4 * 100;
                         if (Object.keys(data)[i] == currentlyOnline[x]){
+                            players.push(Object.values(data)[i].username);
                             tableContent += `<tr>
-                            <td>${Object.values(data)[i].username}</td>
+                            <td style="color:blue; text-decoration: underline;"id="${Object.values(data)[i].username + "-button"}">${Object.values(data)[i].username}</td>
                             <td style="color: green;">${"Online"}</td>
                             <td>${completionPercent + "%"}</td>
                             <td>${Object.values(data)[i].totalTimePlayed}</td>
                             </tr>`;
                         } else {
+                            players.push(Object.values(data)[i].username);
                             tableContent += `<tr>
-                            <td>${Object.values(data)[i].username}</td>
+                            <td style="color:blue; text-decoration: underline;" id="${Object.values(data)[i].username + "-button"}">${Object.values(data)[i].username}</td>
                             <td>${"Offline"}</td>
                             <td>${completionPercent + "%"}</td>
                             <td>${Object.values(data)[i].totalTimePlayed}</td>
@@ -348,19 +351,26 @@ function getUserDataTable(currentlyOnline){
                         }
                     }
                 } else {
+                    players.push(Object.values(data)[i].username);
                     var completionPercent = Object.values(data)[i].completion/4 * 100;
                     tableContent += `<tr>
-                    <td>${Object.values(data)[i].username}</td>
+                    <td style="color:blue; text-decoration: underline;" id="${Object.values(data)[i].username + "-button"}">${Object.values(data)[i].username}</td>
                     <td>${"Offline"}</td>
                     <td>${completionPercent + "%"}</td>
                     <td>${Object.values(data)[i].totalTimePlayed}</td>
                     </tr>`;
-
                 }
                 
             }
             playerBoard.innerHTML = tableContent;
-
+            console.log(players);
+            for(let i = 0; i<players.length; i++){
+                var text = document.getElementById(players[i]+"-button");
+                text.addEventListener('click', function(x){
+                    x.preventDefault();
+                    searchPlayer(players[i], false);
+                })
+            }
         }
     });
 }
@@ -494,7 +504,6 @@ function inputSessionData(data){
             sessionLength.push(timeSpend);
             instanceName.push(sessionName);
         } else {
-            console.log(sessionLength);
             return inputPlayerData(sessionLength, instanceName);
         }
     }
@@ -707,5 +716,11 @@ if (editStartTimeBtn){
     editStartTimeBtn.addEventListener('click', function(x){
         editRecycleStartTime(document.getElementById("editStartTimeText").value);
     })
+}
+
+if(backBtn){
+    backBtn.addEventListener('click', function(){
+        location.reload();
+    });
 }
 
