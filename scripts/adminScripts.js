@@ -215,7 +215,10 @@ function getCurrentOnlineUsers(){
             var data = Object.values(data)[0];
             //get value of current day
             const d = new Date();
-            var currentDay = d.getDay();
+            var currentDay = d.getDay() - 1;
+            if (currentDay == -1){
+                currentDay = 7
+            }
             
             var iteration = -1;
             for (const property in data) {
@@ -296,22 +299,23 @@ function populateUserTable(){
             var data = Object.values(data)[0];
             //get value of current day
             const d = new Date();
-            var currentDay = d.getDay();
-            
-            var iteration = -1;
-            for (const property in data) {
-                iteration += 1;
-                //checks if iterated day is the current day
-                if (property == dates[currentDay]){
-                    if (data[property].currentlyActive != null){
-                        currentlyOnlineUsers = data[property].currentlyActive;
-                        return getUserDataTable(currentlyOnlineUsers);
-                    } 
-                } else {
-                    currentlyOnlineUsers = null;
-                    return getUserDataTable(null);
-                }
+            var currentDay = d.getDay() - 1;
+            if (currentDay == -1){
+                currentDay = 7
             }
+            
+            for (const property in data) {
+                //checks if iterated day is the current day
+                console.log(property)
+                if (property == dates[currentDay] && data[property].currentlyActive != null){
+                    currentlyOnlineUsers = data[property].currentlyActive;
+                    break; 
+                } else if (property == dates[currentDay]){
+                    currentlyOnlineUsers = null;
+                    break; 
+                };
+            }
+            getUserDataTable(currentlyOnlineUsers);
         } else {
             console.log("Snapshot does not exist");
         }
@@ -330,6 +334,7 @@ function getUserDataTable(currentlyOnline){
             for (let i = 0; i<Object.keys(data).length; i++){
                 //first checks if current user is an online user from currentlyOnline array
                 if(currentlyOnline != null){
+                    let online = false;
                     for (let x = 0; x<currentlyOnline.length; x++){
                         var completionPercent = Object.values(data)[i].completion/4 * 100;
                         if (Object.keys(data)[i] == currentlyOnline[x]){
@@ -340,16 +345,19 @@ function getUserDataTable(currentlyOnline){
                             <td>${completionPercent + "%"}</td>
                             <td>${Object.values(data)[i].totalTimePlayed}</td>
                             </tr>`;
-                        } else {
-                            players.push(Object.values(data)[i].username);
-                            tableContent += `<tr>
-                            <td style="color:blue; text-decoration: underline;" id="${Object.values(data)[i].username + "-button"}">${Object.values(data)[i].username}</td>
-                            <td>${"Offline"}</td>
-                            <td>${completionPercent + "%"}</td>
-                            <td>${Object.values(data)[i].totalTimePlayed}</td>
-                            </tr>`;
-                        }
+                            online = true;
+                            break;
+                        } 
                     }
+                    if(online == false){
+                        players.push(Object.values(data)[i].username);
+                        tableContent += `<tr>
+                        <td style="color:blue; text-decoration: underline;" id="${Object.values(data)[i].username + "-button"}">${Object.values(data)[i].username}</td>
+                        <td>${"Offline"}</td>
+                        <td>${completionPercent + "%"}</td>
+                        <td>${Object.values(data)[i].totalTimePlayed}</td>
+                        </tr>`;
+                    };
                 } else {
                     players.push(Object.values(data)[i].username);
                     var completionPercent = Object.values(data)[i].completion/4 * 100;
