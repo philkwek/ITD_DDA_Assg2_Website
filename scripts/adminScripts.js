@@ -643,6 +643,8 @@ onValue(newestGameData, (snapshot) => {
     }
 })
 
+const newPlayers = query 
+
 getCurrentOnlineUsers();
 
 if(page == "adminHomepage.html"){
