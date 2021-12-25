@@ -174,6 +174,20 @@ onAuthStateChanged(auth, (user) => {
           }
         }
       });
+    } 
+    if(page == "signUp.html"){
+      get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
+        if(snapshot.exists()){
+          if(snapshot.val().admin){
+            console.log("user logged in in admin");
+            window.location.href = "../html/adminPages/adminHomepage.html"
+            
+          } else {
+            console.log("user logged in is not admin");
+            window.location.href = "../html/adminPages/userHomepage.html"
+          }
+        }
+      });
     }
   } else {
     // User is signed out
