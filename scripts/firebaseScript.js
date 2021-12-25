@@ -158,17 +158,19 @@ onAuthStateChanged(auth, (user) => {
     //For when user signs up and system logs user in
     var path = window. location. pathname;
     var page = path. split("/"). pop();
-    if(page == "signup.html"){
+    console.log(page);
+    if(page == "index.html"){
       const dbref = ref(db);
       //checks if logged in user is admin or user
       get(child(dbref, "players/" + user.uid)).then((snapshot)=>{
         if(snapshot.exists()){
           if(snapshot.val().admin){
             console.log("user logged in in admin");
-            window.location.href = "../html/adminPages/adminHomepage.html";
+            window.location.href = "html/adminPages/adminHomepage.html"
+            
           } else {
             console.log("user logged in is not admin");
-            window.location.href = "../html/userPages/userHomepage.html";
+            window.location.href = "html/adminPages/userHomepage.html"
           }
         }
       });
@@ -258,7 +260,6 @@ if (loginButton){
     } else {
       authType = browserSessionPersistence;
     }
-
     const emailInput = document.getElementById("emailInput").value;
     const passwordInput = document.getElementById("passwordInput").value;
     loginUser(emailInput, passwordInput, authType);
