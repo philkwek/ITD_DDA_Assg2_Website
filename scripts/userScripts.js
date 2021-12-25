@@ -355,7 +355,7 @@ function populateUserTable(){
                     } 
                 } else {
                     currentlyOnlineUsers = null;
-                    return getUserDataTable(null);
+                    return;
                 }
             }
         } else {
@@ -386,22 +386,10 @@ function getUserDataTable(currentlyOnline){
                             <td>${Object.values(data)[i].totalTimePlayed}</td>
                             </tr>`;
                         } else {
-                            tableContent += `<tr>
-                            <td>${Object.values(data)[i].username}</td>
-                            <td>${"Offline"}</td>
-                            <td>${completionPercent + "%"}</td>
-                            <td>${Object.values(data)[i].totalTimePlayed}</td>
-                            </tr>`;
+                            
                         }
                     }
                 } else {
-                    var completionPercent = Object.values(data)[i].completion/4 * 100;
-                    tableContent += `<tr>
-                    <td>${Object.values(data)[i].username}</td>
-                    <td>${"Offline"}</td>
-                    <td>${completionPercent + "%"}</td>
-                    <td>${Object.values(data)[i].totalTimePlayed}</td>
-                    </tr>`;
 
                 }
                 

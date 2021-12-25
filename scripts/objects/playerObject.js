@@ -14,12 +14,13 @@ function PlayerSessionTime(titleTimeSession, timeSpend, dateOfSession, timeOfSes
     this.timeOfSession = timeOfSession;
 }
 
-function PlayerProfileData(totalTimePlayed, noOfTaskCompleted, noOfMinigamesCompleted, completion, username) {
+function PlayerProfileData(totalTimePlayed, noOfTaskCompleted, noOfMinigamesCompleted, completion, username, minigameHighscore) {
     this.totalTimePlayed = totalTimePlayed;
     this.noOfTaskCompleted = noOfTaskCompleted;
     this.noOfMinigamesCompleted = noOfMinigamesCompleted;
     this.completion = completion;
     this.username = username;
+    this.minigameHighscore = minigameHighscore;
 
 }
 
