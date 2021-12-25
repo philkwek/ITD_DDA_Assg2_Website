@@ -580,7 +580,7 @@ function promoteUser(){
         localStorage.setItem('searchUserAdmin', false)
         set(ref(db, 'players/' + userId + "/admin"), false)
         .then(()=>{
-            console.log("User demoted to user");
+            alert("User has been demoted!");
         })
         .catch((error)=>{
             console.log("Error uploading data!");
@@ -589,7 +589,7 @@ function promoteUser(){
         localStorage.setItem('searchUserAdmin', true)
         set(ref(db, 'players/' + userId + "/admin"), true)
         .then(()=>{
-            console.log("User promoted to admin");
+            alert("User has been promoted!")
         })
         .catch((error)=>{
             console.log("Error uploading data!");
