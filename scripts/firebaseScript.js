@@ -171,7 +171,7 @@ onAuthStateChanged(auth, (user) => {
             
           } else {
             console.log("user logged in is not admin");
-            window.location.href = "html/adminPages/userHomepage.html"
+            window.location.href = "html/userPages/userHomepage.html"
           }
         }
       });
