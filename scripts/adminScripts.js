@@ -557,7 +557,7 @@ function deleteUserData(){
     var username = localStorage.getItem('searchUsername');
 
     let newPlayer = new Player(email, username, userId);
-    let newPlayerProfileData = new PlayerProfileData(0,0,0,username);
+    let newPlayerProfileData = new PlayerProfileData(0,0,0,0,username,0);
     let newMinigameStat = new MinigameStats(0,0,0,0,0,0,0);
     let newPlayerGameData = new PlayerGameData(0,0,newMinigameStat, username)
     
