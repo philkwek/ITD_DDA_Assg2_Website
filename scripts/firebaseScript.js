@@ -93,6 +93,7 @@ function forgotPassword(email){
   .then(() => {
     // Password reset email sent!
     console.log("Email sent!");
+    alert("Email sent!");
     // ..
   })
   .catch((error) => {

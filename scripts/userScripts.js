@@ -415,15 +415,23 @@ if (page == "userLeaderboard.html"){
     populateMinigameHighscore();
 }
 
+const leaderboard = query(ref(db, 'playerProfileData'));
+onValue(leaderboard, (snapshot) => {
+    getCurrentOnlineUsers();
+    if (page == "userLeaderboard.html"){
+        populateMinigameHighscore();
+    }
+})
+
 const latestWeek = query(ref(db, 'weeklyActive'));
 onValue(latestWeek, (snapshot) => {
     getCurrentOnlineUsers();
     if (page == "userSearch.html"){
         const input = document.getElementById("playerSearch").value;
-        if (validateEmail(input)){
+        if (validateEmail(input) && input != ""){
             console.log("Email True");
             searchPlayer(input, true);
-        } else{
+        } else if (input != ""){
             console.log("Email false");
             searchPlayer(input, false);
         };
