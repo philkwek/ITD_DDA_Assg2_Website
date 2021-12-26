@@ -255,7 +255,6 @@ function inputSessionData(data){
             sessionLength.push(timeSpend);
             instanceName.push(sessionName);
         } else {
-            console.log(sessionLength);
             return inputPlayerData(sessionLength, instanceName);
         }
     }
@@ -281,6 +280,7 @@ function populateTimeLeaderboard(){
             });
 
             arrayToReverse.reverse();
+            console.log(arrayToReverse);
 
             for (let i = 0; i < arrayToReverse.length; i++){
                 var obj = arrayToReverse[i];
@@ -300,7 +300,7 @@ function populateTimeLeaderboard(){
 }
 
 function populateMinigameHighscore(){
-    const timeSearch = query(ref(db, 'playerGameData'), orderByChild("highscore"), limitToLast(10))
+    const timeSearch = query(ref(db, 'playerProfileData'), orderByChild("minigameHighscore"), limitToLast(10))
     get(timeSearch).then((snapshot)=>{
         if(snapshot.exists()){
             var arrayToReverse = []; //used to store data to be reversed
@@ -321,7 +321,7 @@ function populateMinigameHighscore(){
                 snapshotContent += `<tr>
                 <td>${position}</td>
                 <td>${obj.username}</td>
-                <td>${obj.minigameStats.highscore}</td>
+                <td>${obj.minigameHighscore}</td>
                 </tr>`;
             }
             timeBoard.innerHTML = snapshotContent;
@@ -439,15 +439,17 @@ onAuthStateChanged(auth, (user) => {
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
       const dbref = ref(db);
-      get(child(dbref, "players/" + uid)).then((snapshot)=>{
-        if(snapshot.exists()){
-          const username = snapshot.val().username;
-          console.log("Current logged into with profile: " + username);
-          return getPlayerData(uid);
-        } else {
-          console.log("Not found");
-        }
-      });
+      if (page=="userHomepage.html"){
+        get(child(dbref, "players/" + uid)).then((snapshot)=>{
+            if(snapshot.exists()){
+              const username = snapshot.val().username;
+              console.log("Current logged into with profile: " + username);
+              return getPlayerData(uid);
+            } else {
+              console.log("Not found");
+            }
+          });
+      }
     } else {
       // User is signed out
   
